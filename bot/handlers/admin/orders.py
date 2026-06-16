@@ -7,29 +7,15 @@ from bot.keyboards.admin import get_admin_orders_keyboard
 from bot.services.delivery_service import DeliveryService
 from bot.services.notification_service import NotificationService
 from bot.utils.helpers import format_price, format_datetime
-from config import settings
+from bot.utils.admin import admin_only
 
 router = Router()
 
 
-def admin_only(func):
-    from functools import wraps
-    @wraps(func)
-    async def wrapper(callback: CallbackQuery, *args, **kwargs):
-        if callback.from_user.id not in settings.admin_list:
-            await callback.answer("⛔ Unauthorized", show_alert=True)
-            return
-        return await func(callback, *args, **kwargs)
-    return wrapper
-
-
-async def _update_user_stats_after_delivery(session: AsyncSession, order: Order) -> None:
-    """Increment user.total_orders and user.total_spent when an order is delivered."""
+async def _update_user_stats(session: AsyncSession, order: Order) -> None:
     try:
-        user_res = await session.execute(
-            select(User).where(User.telegram_id == order.user_telegram_id)
-        )
-        user = user_res.scalar_one_or_none()
+        res = await session.execute(select(User).where(User.telegram_id == order.user_telegram_id))
+        user = res.scalar_one_or_none()
         if user:
             user.total_orders += 1
             user.total_spent += order.final_price
@@ -61,17 +47,14 @@ async def handle_admin_orders_filter(callback: CallbackQuery, session: AsyncSess
         "rejected": [OrderStatus.REJECTED, OrderStatus.CANCELLED],
     }
     statuses = status_map.get(filter_type, [OrderStatus.PENDING])
-
     result = await session.execute(
         select(Order).where(Order.status.in_(statuses))
         .order_by(Order.created_at.desc()).limit(20)
     )
     orders = list(result.scalars().all())
-
     if not orders:
         await callback.answer("No orders found.", show_alert=True)
         return
-
     buttons = []
     for order in orders:
         buttons.append([InlineKeyboardButton(
@@ -79,7 +62,6 @@ async def handle_admin_orders_filter(callback: CallbackQuery, session: AsyncSess
             callback_data=f"admin_order_detail:{order.id}"
         )])
     buttons.append([InlineKeyboardButton(text="◀️ Back", callback_data="admin:orders")])
-
     await callback.message.edit_text(
         f"📋 <b>Orders — {filter_type.title()}</b>",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons),
@@ -98,7 +80,6 @@ async def handle_admin_order_detail(callback: CallbackQuery, session: AsyncSessi
     if not order:
         await callback.answer("Order not found.", show_alert=True)
         return
-
     text = (
         f"📦 <b>Order #{order.order_number}</b>\n\n"
         f"👤 User: <code>{order.user_telegram_id}</code>\n"
@@ -112,12 +93,7 @@ async def handle_admin_order_detail(callback: CallbackQuery, session: AsyncSessi
     if order.status not in [OrderStatus.DELIVERED, OrderStatus.CANCELLED, OrderStatus.REJECTED]:
         kb_rows.append([InlineKeyboardButton(text="❌ Reject Order", callback_data=f"admin_reject_order:{order_id}")])
     kb_rows.append([InlineKeyboardButton(text="◀️ Back", callback_data="admin:orders")])
-
-    await callback.message.edit_text(
-        text,
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=kb_rows),
-        parse_mode="HTML",
-    )
+    await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=kb_rows), parse_mode="HTML")
     await callback.answer()
 
 
@@ -127,19 +103,16 @@ async def handle_admin_deliver(callback: CallbackQuery, session: AsyncSession):
     order_id = int(callback.data.split(":")[1])
     delivery_service = DeliveryService(session)
     content = await delivery_service.deliver_order(order_id)
-
     result = await session.execute(select(Order).where(Order.id == order_id))
     order = result.scalar_one_or_none()
-
     if content and order:
-        await _update_user_stats_after_delivery(session, order)
+        await _update_user_stats(session, order)
         await session.commit()
-
         notif = NotificationService(callback.bot)
         user_text = (
             f"🎉 <b>Your Order Has Been Delivered!</b>\n\n"
             f"📦 Order: <code>#{order.order_number}</code>\n\n"
-            f"<b>Your Product:</b>\n<code>{content}</code>\n\n"
+            f"<b>Your Product:</b>\n{content}\n\n"
             "✅ Thank you for shopping with us!"
         )
         await notif.notify_user(order.user_telegram_id, user_text)
@@ -150,38 +123,29 @@ async def handle_admin_deliver(callback: CallbackQuery, session: AsyncSession):
 
 
 @router.callback_query(F.data.startswith("admin_confirm_pay:"))
+@admin_only
 async def handle_admin_confirm_payment(callback: CallbackQuery, session: AsyncSession):
-    if callback.from_user.id not in settings.admin_list:
-        await callback.answer("⛔ Unauthorized", show_alert=True)
-        return
-
     payment_id = int(callback.data.split(":")[1])
     from bot.services.payment_service import PaymentService
     payment_service = PaymentService(session)
     await payment_service.confirm_payment(payment_id, callback.from_user.id)
-
     payment = await payment_service.get_payment(payment_id)
     result = await session.execute(select(Order).where(Order.payment_id == payment_id))
     order = result.scalar_one_or_none()
-
     if order:
         order.status = OrderStatus.PREPARING
         await session.flush()
-
         delivery_service = DeliveryService(session)
         content = await delivery_service.deliver_order(order.id)
-
         if content:
-            await _update_user_stats_after_delivery(session, order)
-
+            await _update_user_stats(session, order)
         await session.commit()
-
         notif = NotificationService(callback.bot)
         if content:
             user_text = (
                 f"🎉 <b>Order Delivered!</b>\n\n"
                 f"📦 Order: <code>#{order.order_number}</code>\n\n"
-                f"<b>Your Product:</b>\n<code>{content}</code>\n\n"
+                f"<b>Your Product:</b>\n{content}\n\n"
                 "✅ Thank you for shopping with us!"
             )
         else:
@@ -190,7 +154,6 @@ async def handle_admin_confirm_payment(callback: CallbackQuery, session: AsyncSe
                 "Your product will be delivered shortly."
             )
         await notif.notify_user(order.user_telegram_id, user_text)
-
     try:
         await callback.message.edit_text(
             callback.message.text + "\n\n✅ <b>PAYMENT CONFIRMED</b>",
@@ -202,16 +165,12 @@ async def handle_admin_confirm_payment(callback: CallbackQuery, session: AsyncSe
 
 
 @router.callback_query(F.data.startswith("admin_reject_pay:"))
+@admin_only
 async def handle_admin_reject_payment(callback: CallbackQuery, session: AsyncSession):
-    if callback.from_user.id not in settings.admin_list:
-        await callback.answer("⛔ Unauthorized", show_alert=True)
-        return
-
     payment_id = int(callback.data.split(":")[1])
     from bot.services.payment_service import PaymentService
     payment_service = PaymentService(session)
     await payment_service.reject_payment(payment_id, callback.from_user.id, "Rejected by admin")
-
     result = await session.execute(select(Order).where(Order.payment_id == payment_id))
     order = result.scalar_one_or_none()
     if order:
