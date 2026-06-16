@@ -1,6 +1,6 @@
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, update
+from sqlalchemy import select
 from database.models import (
     Order, OrderStatus, Product, ProductCategory,
     GiftCard, VisaCard, MasterCard
@@ -31,7 +31,7 @@ class DeliveryService:
 
         content = await self._get_inventory_item(product, order.id)
         if not content:
-            logger.warning(f"No inventory available for product {product.id} order {order_id}")
+            logger.warning(f"No inventory for product {product.id} order {order_id}")
             return None
 
         order.status = OrderStatus.DELIVERED
@@ -50,6 +50,9 @@ class DeliveryService:
             return await self._deliver_visa_card(product.id, order_id)
         elif product.category == ProductCategory.MASTERCARD:
             return await self._deliver_master_card(product.id, order_id)
+        elif product.category == ProductCategory.PREMIUM_SERVICE:
+            return await self._deliver_gift_card(product.id, order_id)
+        logger.error(f"Unknown product category: {product.category}")
         return None
 
     async def _deliver_gift_card(self, product_id: int, order_id: int) -> Optional[str]:
@@ -87,19 +90,19 @@ class DeliveryService:
         card.order_id = order_id
         card.sold_at = datetime.now(timezone.utc)
         await self.session.flush()
-        lines = ["💳 Visa Card Details:"]
+        lines = ["💳 <b>Visa Card Details</b>"]
         if card.card_number:
-            lines.append(f"Card Number: {card.card_number}")
+            lines.append(f"Card Number: <code>{card.card_number}</code>")
         if card.expiry_month and card.expiry_year:
-            lines.append(f"Expiry: {card.expiry_month}/{card.expiry_year}")
+            lines.append(f"Expiry: <b>{card.expiry_month}/{card.expiry_year}</b>")
         if card.cvv:
-            lines.append(f"CVV: {card.cvv}")
+            lines.append(f"CVV: <code>{card.cvv}</code>")
         if card.cardholder_name:
-            lines.append(f"Cardholder: {card.cardholder_name}")
+            lines.append(f"Name: {card.cardholder_name}")
         if card.billing_address:
             lines.append(f"Billing: {card.billing_address}")
         if card.extra_info:
-            lines.append(f"Info: {card.extra_info}")
+            lines.append(f"Extra: {card.extra_info}")
         return "\n".join(lines)
 
     async def _deliver_master_card(self, product_id: int, order_id: int) -> Optional[str]:
@@ -116,39 +119,32 @@ class DeliveryService:
         card.order_id = order_id
         card.sold_at = datetime.now(timezone.utc)
         await self.session.flush()
-        lines = ["💳 MasterCard Details:"]
+        lines = ["💳 <b>MasterCard Details</b>"]
         if card.card_number:
-            lines.append(f"Card Number: {card.card_number}")
+            lines.append(f"Card Number: <code>{card.card_number}</code>")
         if card.expiry_month and card.expiry_year:
-            lines.append(f"Expiry: {card.expiry_month}/{card.expiry_year}")
+            lines.append(f"Expiry: <b>{card.expiry_month}/{card.expiry_year}</b>")
         if card.cvv:
-            lines.append(f"CVV: {card.cvv}")
+            lines.append(f"CVV: <code>{card.cvv}</code>")
         if card.cardholder_name:
-            lines.append(f"Cardholder: {card.cardholder_name}")
+            lines.append(f"Name: {card.cardholder_name}")
         if card.extra_info:
-            lines.append(f"Info: {card.extra_info}")
+            lines.append(f"Extra: {card.extra_info}")
         return "\n".join(lines)
 
-    async def add_gift_card_stock(self, product_id: int, code: str, pin: Optional[str], brand: str, value: Optional[str], added_by: int) -> GiftCard:
-        card = GiftCard(
-            product_id=product_id,
-            code=code,
-            pin=pin,
-            brand=brand,
-            value=value,
-            added_by=added_by,
-        )
+    async def add_gift_card_stock(self, product_id, code, pin, brand, value, added_by) -> GiftCard:
+        card = GiftCard(product_id=product_id, code=code, pin=pin, brand=brand, value=value, added_by=added_by)
         self.session.add(card)
         await self.session.flush()
         return card
 
-    async def add_visa_card_stock(self, product_id: int, data: dict, added_by: int) -> VisaCard:
+    async def add_visa_card_stock(self, product_id, data: dict, added_by) -> VisaCard:
         card = VisaCard(product_id=product_id, added_by=added_by, **data)
         self.session.add(card)
         await self.session.flush()
         return card
 
-    async def add_master_card_stock(self, product_id: int, data: dict, added_by: int) -> MasterCard:
+    async def add_master_card_stock(self, product_id, data: dict, added_by) -> MasterCard:
         card = MasterCard(product_id=product_id, added_by=added_by, **data)
         self.session.add(card)
         await self.session.flush()
