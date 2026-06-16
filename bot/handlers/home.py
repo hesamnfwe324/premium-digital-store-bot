@@ -59,25 +59,8 @@ async def handle_about(callback: CallbackQuery, user_lang: str = "en"):
 
 @router.callback_query(F.data == "menu:tutorials")
 async def handle_tutorials(callback: CallbackQuery, user_lang: str = "en"):
-    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
     from bot.keyboards.account import get_back_keyboard
-
-    text = (
-        "📚 <b>Tutorials & Guides</b>\n\n"
-        "1️⃣ <b>How to Purchase a Card</b>\n"
-        "   → Select category → Choose product → Pay with crypto → Receive instantly\n\n"
-        "2️⃣ <b>Supported Cryptocurrencies</b>\n"
-        "   → USDT TRC20, USDT BEP20, BTC, ETH, BNB, TON\n\n"
-        "3️⃣ <b>How to Submit Payment</b>\n"
-        "   → Send to the provided wallet address\n"
-        "   → Copy the transaction ID (TXID)\n"
-        "   → Submit in the bot\n\n"
-        "4️⃣ <b>Delivery Times</b>\n"
-        "   → Virtual cards: Instant after payment confirmation\n"
-        "   → Gift cards: Instant after confirmation\n\n"
-        "5️⃣ <b>Referral Program</b>\n"
-        "   → Share your link → Earn 5% from purchases"
-    )
+    text = get_text("tutorials", user_lang)
     try:
         await callback.message.edit_text(
             text,
