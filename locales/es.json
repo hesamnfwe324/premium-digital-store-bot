@@ -1,8 +1,8 @@
 {
   "language_selection": "🌍 <b>Bienvenido a Premium Digital Store</b>\n\nPor favor, seleccione su idioma para continuar.",
   "language_changed": "✅ ¡Idioma cambiado a Español exitosamente!",
-  "welcome_back": "👋 Bienvenido de nuevo, <b>{name}</b>!\n\nEstás en <b>Premium Digital Store</b>.\nElige una opción:",
-  "welcome_new": "🎉 ¡Bienvenido a <b>Premium Digital Store</b>, <b>{name}</b>!\n\nTu cuenta ha sido creada. Empieza a explorar nuestros productos premium.",
+  "welcome_back": "🛰 <b>VPS24H | Centro de Comando Digital</b>\n\nBienvenido de nuevo, <b>{name}</b> 👋\n\nEntra en la plataforma de servicios digitales más avanzada de la región.\n\n▸ 💎 Servicios de suscripción premium\n▸ 🎁 Tarjetas de regalo globales\n▸ 💳 Tarjetas virtuales internacionales\n▸ 🌐 VPN privado de alta velocidad\n\n⚡ Entrega instantánea  •  🔐 100% seguro  •  🌍 Cobertura mundial\n\nSelecciona el servicio deseado:",
+  "welcome_new": "🛰 <b>VPS24H | Centro de Comando Digital</b>\n\nBienvenido, <b>{name}</b> 🎉\n\nTu cuenta ha sido creada exitosamente.\nTe has unido a la plataforma de servicios digitales más avanzada de la región.\n\n▸ 💎 Servicios de suscripción premium\n▸ 🎁 Tarjetas de regalo globales\n▸ 💳 Tarjetas virtuales internacionales\n▸ 🌐 VPN privado de alta velocidad\n\n⚡ Entrega instantánea  •  🔐 100% seguro  •  🌍 Cobertura mundial",
   "home": "🏠 <b>Menú Principal</b>\n\nBienvenido a Premium Digital Store.\n¿Qué deseas hacer hoy?",
   "visa_cards": "💳 <b>Tarjetas Visa</b>\n\nExplora nuestra selección de tarjetas Visa premium:",
   "mastercards": "💳 <b>MasterCards</b>\n\nExplora nuestra selección de MasterCards premium:",
@@ -74,5 +74,10 @@
   "status_delivering": "🚀 Enviando",
   "status_delivered": "✅ Entregado",
   "status_rejected": "❌ Rechazado",
-  "status_cancelled": "❌ Cancelado"
+  "status_cancelled": "❌ Cancelado",
+  "btn_gift_reward": "🎁 Premio Regalo",
+  "gift_reward_progress": "🎁 <b>Programa de Premio Regalo</b>\n\n¡Invita a 30 personas y obtén una tarjeta de regalo de $10 GRATIS!\n\n👥 Personas invitadas: <b>{count}</b>\n🎯 Hasta el premio: <b>{remaining}</b> más\n\n{progress_bar}",
+  "gift_reward_earned": "🎉 <b>¡Felicitaciones! ¡Tu regalo está listo!</b>\n\n✅ ¡Has invitado a 30 personas!\n🎁 Una tarjeta de regalo de $10 está reservada para ti.\n\n📞 Contacta con soporte:\n@VPS24H",
+  "gift_reward_unlocked": "🎊 <b>¡Regalo especial para ti!</b>\n\n✅ ¡Has alcanzado 30 referidos!\n🎁 Una tarjeta de regalo de $10 es tuya.\n\n📞 Contacta con soporte ahora:\n@VPS24H",
+  "referral_new_join": "🎉 <b>¡Referido exitoso!</b>\n\n👤 <b>{name}</b> se unió usando tu enlace de invitación!\n👥 Total de referidos: <b>{count}</b>"
 }
