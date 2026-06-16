@@ -1,8 +1,8 @@
 {
   "language_selection": "🌍 <b>Bienvenue au Premium Digital Store</b>\n\nVeuillez sélectionner votre langue pour continuer.",
   "language_changed": "✅ Langue changée en Français avec succès!",
-  "welcome_back": "👋 Bon retour, <b>{name}</b>!\n\nVous êtes dans <b>Premium Digital Store</b>.\nChoisissez une option:",
-  "welcome_new": "🎉 Bienvenue dans <b>Premium Digital Store</b>, <b>{name}</b>!\n\nVotre compte a été créé. Commencez à explorer nos produits premium.",
+  "welcome_back": "🛰 <b>VPS24H | Centre de Commandement Numérique</b>\n\nBon retour, <b>{name}</b> 👋\n\nEntrez dans la plateforme de services numériques la plus avancée de la région.\n\n▸ 💎 Services d'abonnement premium\n▸ 🎁 Cartes cadeaux mondiales\n▸ 💳 Cartes virtuelles internationales\n▸ 🌐 VPN privé haute vitesse\n\n⚡ Livraison instantanée  •  🔐 100% sécurisé  •  🌍 Couverture mondiale\n\nSélectionnez le service souhaité:",
+  "welcome_new": "🛰 <b>VPS24H | Centre de Commandement Numérique</b>\n\nBienvenue, <b>{name}</b> 🎉\n\nVotre compte a été créé avec succès.\nVous avez rejoint la plateforme de services numériques la plus avancée de la région.\n\n▸ 💎 Services d'abonnement premium\n▸ 🎁 Cartes cadeaux mondiales\n▸ 💳 Cartes virtuelles internationales\n▸ 🌐 VPN privé haute vitesse\n\n⚡ Livraison instantanée  •  🔐 100% sécurisé  •  🌍 Couverture mondiale",
   "home": "🏠 <b>Menu Principal</b>\n\nBienvenue au Premium Digital Store.\nQue souhaitez-vous faire aujourd'hui?",
   "visa_cards": "💳 <b>Cartes Visa</b>\n\nParcourez notre sélection de cartes Visa premium:",
   "mastercards": "💳 <b>MasterCards</b>\n\nParcourez notre sélection de MasterCards premium:",
@@ -74,5 +74,10 @@
   "status_delivering": "🚀 Livraison",
   "status_delivered": "✅ Livré",
   "status_rejected": "❌ Rejeté",
-  "status_cancelled": "❌ Annulé"
+  "status_cancelled": "❌ Annulé",
+  "btn_gift_reward": "🎁 Récompense Cadeau",
+  "gift_reward_progress": "🎁 <b>Programme de Récompense Cadeau</b>\n\nInvitez 30 personnes et obtenez une carte cadeau de $10 GRATUITE!\n\n👥 Personnes invitées: <b>{count}</b>\n🎯 Jusqu'à la récompense: <b>{remaining}</b> de plus\n\n{progress_bar}",
+  "gift_reward_earned": "🎉 <b>Félicitations! Votre cadeau est prêt!</b>\n\n✅ Vous avez invité 30 personnes!\n🎁 Une carte cadeau de $10 est réservée pour vous.\n\n📞 Contactez le support:\n@VPS24H",
+  "gift_reward_unlocked": "🎊 <b>Cadeau spécial pour vous!</b>\n\n✅ Vous avez atteint 30 parrainages!\n🎁 Une carte cadeau de $10 est à vous.\n\n📞 Contactez le support maintenant:\n@VPS24H",
+  "referral_new_join": "🎉 <b>Parrainage réussi!</b>\n\n👤 <b>{name}</b> a rejoint en utilisant votre lien!\n👥 Total de parrainages: <b>{count}</b>"
 }
