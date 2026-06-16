@@ -1,8 +1,8 @@
 {
   "language_selection": "🌍 <b>Willkommen im Premium Digital Store</b>\n\nBitte wählen Sie Ihre Sprache aus.",
   "language_changed": "✅ Sprache erfolgreich auf Deutsch geändert!",
-  "welcome_back": "👋 Willkommen zurück, <b>{name}</b>!\n\nSie befinden sich im <b>Premium Digital Store</b>.\nWählen Sie eine Option:",
-  "welcome_new": "🎉 Willkommen im <b>Premium Digital Store</b>, <b>{name}</b>!\n\nIhr Konto wurde erstellt. Entdecken Sie unsere Premium-Produkte.",
+  "welcome_back": "🛰 <b>VPS24H | Digitales Befehlszentrum</b>\n\nWillkommen zurück, <b>{name}</b> 👋\n\nBetreten Sie die fortschrittlichste Plattform für digitale Dienste der Region.\n\n▸ 💎 Premium-Abonnementdienste\n▸ 🎁 Globale Geschenkkarten\n▸ 💳 Internationale virtuelle Karten\n▸ 🌐 Schnelles privates VPN\n\n⚡ Sofortige Lieferung  •  🔐 100% sicher  •  🌍 Weltweite Abdeckung\n\nWählen Sie Ihren gewünschten Service:",
+  "welcome_new": "🛰 <b>VPS24H | Digitales Befehlszentrum</b>\n\nWillkommen, <b>{name}</b> 🎉\n\nIhr Konto wurde erfolgreich erstellt.\nSie sind der fortschrittlichsten Plattform für digitale Dienste der Region beigetreten.\n\n▸ 💎 Premium-Abonnementdienste\n▸ 🎁 Globale Geschenkkarten\n▸ 💳 Internationale virtuelle Karten\n▸ 🌐 Schnelles privates VPN\n\n⚡ Sofortige Lieferung  •  🔐 100% sicher  •  🌍 Weltweite Abdeckung",
   "home": "🏠 <b>Hauptmenü</b>\n\nWillkommen im Premium Digital Store.\nWas möchten Sie heute tun?",
   "visa_cards": "💳 <b>Visa-Karten</b>\n\nStöbern Sie in unserer Auswahl an Premium-Visa-Karten:",
   "mastercards": "💳 <b>MasterCards</b>\n\nStöbern Sie in unserer Auswahl an Premium-MasterCards:",
@@ -74,5 +74,10 @@
   "status_delivering": "🚀 Wird geliefert",
   "status_delivered": "✅ Geliefert",
   "status_rejected": "❌ Abgelehnt",
-  "status_cancelled": "❌ Storniert"
+  "status_cancelled": "❌ Storniert",
+  "btn_gift_reward": "🎁 Geschenkprämie",
+  "gift_reward_progress": "🎁 <b>Geschenkprämien-Programm</b>\n\nLaden Sie 30 Personen ein und erhalten Sie eine KOSTENLOSE $10-Geschenkkarte!\n\n👥 Eingeladene Personen: <b>{count}</b>\n🎯 Bis zur Prämie: <b>{remaining}</b> mehr\n\n{progress_bar}",
+  "gift_reward_earned": "🎉 <b>Glückwunsch! Ihr Geschenk ist bereit!</b>\n\n✅ Sie haben 30 Personen eingeladen!\n🎁 Eine $10-Geschenkkarte ist für Sie reserviert.\n\n📞 Kontaktieren Sie den Support:\n@VPS24H",
+  "gift_reward_unlocked": "🎊 <b>Besonderes Geschenk für Sie!</b>\n\n✅ Sie haben 30 Empfehlungen erreicht!\n🎁 Eine $10-Geschenkkarte gehört Ihnen.\n\n📞 Kontaktieren Sie jetzt den Support:\n@VPS24H",
+  "referral_new_join": "🎉 <b>Erfolgreiche Empfehlung!</b>\n\n👤 <b>{name}</b> ist über Ihren Link beigetreten!\n👥 Ihre Empfehlungen gesamt: <b>{count}</b>"
 }
