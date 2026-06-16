@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, String, Boolean, DateTime, Float, Integer, ForeignKey
+from sqlalchemy import BigInteger, String, Boolean, DateTime, Float, Integer, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 from database.connection import Base
@@ -9,8 +9,13 @@ from typing import Optional, List
 class User(Base):
     __tablename__ = "users"
 
+    # Explicit UniqueConstraint on telegram_id so PostgreSQL FK validation works
+    __table_args__ = (
+        UniqueConstraint("telegram_id", name="uq_users_telegram_id"),
+    )
+
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False, index=True)
+    telegram_id: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
     username: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     first_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     last_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
