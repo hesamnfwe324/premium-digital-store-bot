@@ -1,8 +1,8 @@
 {
   "language_selection": "🌍 <b>欢迎来到高级数字商店</b>\n\n请选择您的语言以继续。",
   "language_changed": "✅ 语言已成功更改为中文！",
-  "welcome_back": "👋 欢迎回来，<b>{name}</b>！\n\n您正在使用 <b>高级数字商店</b>。\n请选择一个选项：",
-  "welcome_new": "🎉 欢迎来到 <b>高级数字商店</b>，<b>{name}</b>！\n\n您的账户已创建。开始探索我们的优质产品吧。",
+  "welcome_back": "🛰 <b>VPS24H | 数字指挥中心</b>\n\n欢迎回来，<b>{name}</b> 👋\n\n进入该地区最先进的数字服务平台。\n\n▸ 💎 高级订阅服务\n▸ 🎁 全球礼品卡\n▸ 💳 国际虚拟卡\n▸ 🌐 高速私人VPN\n\n⚡ 即时交付  •  🔐 100%安全  •  🌍 全球覆盖\n\n请选择您需要的服务：",
+  "welcome_new": "🛰 <b>VPS24H | 数字指挥中心</b>\n\n欢迎，<b>{name}</b> 🎉\n\n您的账户已成功创建。\n您已加入该地区最先进的数字服务平台。\n\n▸ 💎 高级订阅服务\n▸ 🎁 全球礼品卡\n▸ 💳 国际虚拟卡\n▸ 🌐 高速私人VPN\n\n⚡ 即时交付  •  🔐 100%安全  •  🌍 全球覆盖",
   "home": "🏠 <b>主菜单</b>\n\n欢迎来到高级数字商店。\n今天您想做什么？",
   "visa_cards": "💳 <b>Visa卡</b>\n\n浏览我们精选的高级Visa卡：",
   "mastercards": "💳 <b>万事达卡</b>\n\n浏览我们精选的高级万事达卡：",
@@ -74,5 +74,10 @@
   "status_delivering": "🚀 配送中",
   "status_delivered": "✅ 已送达",
   "status_rejected": "❌ 已拒绝",
-  "status_cancelled": "❌ 已取消"
+  "status_cancelled": "❌ 已取消",
+  "btn_gift_reward": "🎁 礼品奖励",
+  "gift_reward_progress": "🎁 <b>礼品奖励计划</b>\n\n邀请30人，免费获得$10礼品卡！\n\n👥 已邀请人数：<b>{count}</b>\n🎯 距奖励还需：<b>{remaining}</b>人\n\n{progress_bar}",
+  "gift_reward_earned": "🎉 <b>恭喜！您的礼品已准备好！</b>\n\n✅ 您已邀请了30人！\n🎁 一张$10礼品卡已为您预留。\n\n📞 联系客服领取您的奖励：\n@VPS24H",
+  "gift_reward_unlocked": "🎊 <b>给您的特别礼品！</b>\n\n✅ 您已达到30个推荐！\n🎁 $10礼品卡归您所有。\n\n📞 立即联系客服：\n@VPS24H",
+  "referral_new_join": "🎉 <b>推荐成功！</b>\n\n👤 <b>{name}</b> 通过您的邀请链接加入了！\n👥 您的推荐总数：<b>{count}</b>"
 }
