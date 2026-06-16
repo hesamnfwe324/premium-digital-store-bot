@@ -22,6 +22,9 @@ def get_main_menu_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
             InlineKeyboardButton(text=t("btn_referral"), callback_data="menu:referral"),
         ],
         [
+            InlineKeyboardButton(text=t("btn_gift_reward"), callback_data="menu:gift_reward"),
+        ],
+        [
             InlineKeyboardButton(text=t("btn_discount_codes"), callback_data="menu:discount_codes"),
             InlineKeyboardButton(text=t("btn_tutorials"), callback_data="menu:tutorials"),
         ],
