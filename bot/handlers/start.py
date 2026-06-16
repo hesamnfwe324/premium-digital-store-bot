@@ -2,6 +2,8 @@ from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, func
+from database.models import User, Referral
 from bot.services.user_service import UserService
 from bot.keyboards.language import get_language_keyboard
 from bot.keyboards.main_menu import get_main_menu_keyboard
@@ -9,6 +11,8 @@ from bot.utils.i18n import get_text
 from bot.utils.logger import logger
 
 router = Router()
+
+GIFT_REWARD_THRESHOLD = 30
 
 
 @router.message(CommandStart())
@@ -27,6 +31,27 @@ async def cmd_start(message: Message, session: AsyncSession, db_user=None, user_
         referred_by_code=referred_by_code,
     )
     await session.commit()
+
+    if is_new and referred_by_code:
+        try:
+            referrer_result = await session.execute(
+                select(User).where(User.referral_code == referred_by_code)
+            )
+            referrer = referrer_result.scalar_one_or_none()
+            if referrer:
+                ref_count_result = await session.execute(
+                    select(func.count(Referral.id)).where(Referral.referrer_id == referrer.telegram_id)
+                )
+                ref_count = ref_count_result.scalar() or 0
+                notif_lang = referrer.language_code or "en"
+                new_name = tg_user.first_name or "Someone"
+                notif_text = get_text("referral_new_join", notif_lang, name=new_name, count=ref_count)
+                await message.bot.send_message(referrer.telegram_id, notif_text, parse_mode="HTML")
+                if ref_count == GIFT_REWARD_THRESHOLD:
+                    gift_text = get_text("gift_reward_unlocked", notif_lang)
+                    await message.bot.send_message(referrer.telegram_id, gift_text, parse_mode="HTML")
+        except Exception as e:
+            logger.warning(f"Could not send referral notification: {e}")
 
     if is_new:
         await message.answer(
