@@ -28,7 +28,7 @@ async def cmd_start(message: Message, session: AsyncSession, db_user=None, user_
     )
     await session.commit()
 
-    if is_new or not user.language_code or user.language_code == "en":
+    if is_new:
         await message.answer(
             get_text("language_selection", "en"),
             reply_markup=get_language_keyboard(),
@@ -36,7 +36,7 @@ async def cmd_start(message: Message, session: AsyncSession, db_user=None, user_
         )
         logger.info(f"New user {tg_user.id} shown language selection")
     else:
-        lang = user.language_code
+        lang = user.language_code or "en"
         await message.answer(
             get_text("welcome_back", lang, name=user.full_name),
             reply_markup=get_main_menu_keyboard(lang),
