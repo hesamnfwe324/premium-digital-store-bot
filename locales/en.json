@@ -74,5 +74,10 @@
   "status_delivering": "🚀 Delivering",
   "status_delivered": "✅ Delivered",
   "status_rejected": "❌ Rejected",
-  "status_cancelled": "❌ Cancelled"
+  "status_cancelled": "❌ Cancelled",
+  "btn_gift_reward": "🎁 Gift Reward",
+  "gift_reward_progress": "🎁 <b>Gift Reward Program</b>\n\nInvite 30 people and get a FREE $10 Gift Card!\n\n👥 People invited: <b>{count}</b>\n🎯 Until reward: <b>{remaining}</b> more\n\n{progress_bar}\n\n💡 Get your invite link from the 🎯 Referral Program section.",
+  "gift_reward_earned": "🎉 <b>Congratulations! Your gift is ready!</b>\n\n✅ You have invited 30 people!\n🎁 A $10 Gift Card is reserved for you.\n\n📞 Contact support to claim your reward:\n@VPS24H",
+  "gift_reward_unlocked": "🎊 <b>Special Gift for You!</b>\n\n✅ You have reached 30 referrals!\n🎁 A $10 Gift Card is yours as a reward.\n\n📞 Contact support now:\n@VPS24H",
+  "referral_new_join": "🎉 <b>Successful Referral!</b>\n\n👤 <b>{name}</b> joined using your invite link!\n👥 Your total referrals: <b>{count}</b>"
 }
