@@ -125,22 +125,33 @@ async def handle_discount_code_input(
     session: AsyncSession,
     user_lang: str = "en",
 ):
-    from bot.services.discount_service import DiscountService
+    from bot.services.discount_service import DiscountService, MIN_ORDER_FOR_DISCOUNT
     code = message.text.strip() if message.text else ""
+    if not code:
+        await state.clear()
+        return
+
     discount_service = DiscountService(session)
+    discount, status = await discount_service.check_code_eligibility(code, message.from_user.id)
 
-    # Pass a large amount so that min_order_amount check doesn't incorrectly
-    # reject a valid code when we're only validating existence/activity.
-    discount = await discount_service.validate_code(code, float("inf"))
-
-    if not discount:
-        await message.answer(get_text("invalid_discount", user_lang), parse_mode="HTML")
-    else:
+    if status == "valid":
         saved = discount.discount_value
         if discount.discount_type.value == "percentage":
-            text = get_text("discount_applied", user_lang, code=code.upper(), saved=f"{saved}%")
+            saved_text = str(int(saved)) + "%"
         else:
-            text = get_text("discount_applied", user_lang, code=code.upper(), saved=format_price(saved))
+            saved_text = "$" + str(round(saved, 2))
+        text = get_text("discount_valid_info", user_lang,
+                        code=code.upper(),
+                        saved=saved_text,
+                        min_order=str(int(MIN_ORDER_FOR_DISCOUNT)))
         await message.answer(text, parse_mode="HTML")
+    elif status == "not_found":
+        await message.answer(get_text("discount_not_found", user_lang), parse_mode="HTML")
+    elif status == "expired":
+        await message.answer(get_text("discount_expired", user_lang), parse_mode="HTML")
+    elif status == "not_eligible":
+        await message.answer(get_text("discount_not_eligible", user_lang), parse_mode="HTML")
+    else:
+        await message.answer(get_text("invalid_discount", user_lang), parse_mode="HTML")
 
     await state.clear()
