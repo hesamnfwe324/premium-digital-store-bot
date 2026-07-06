@@ -79,5 +79,11 @@
   "gift_reward_progress": "🎁 <b>Geschenkprämien-Programm</b>\n\nLaden Sie 30 Personen ein und erhalten Sie eine KOSTENLOSE $10-Geschenkkarte!\n\n👥 Eingeladene Personen: <b>{count}</b>\n🎯 Bis zur Prämie: <b>{remaining}</b> mehr\n\n{progress_bar}",
   "gift_reward_earned": "🎉 <b>Glückwunsch! Ihr Geschenk ist bereit!</b>\n\n✅ Sie haben 30 Personen eingeladen!\n🎁 Eine $10-Geschenkkarte ist für Sie reserviert.\n\n📞 Kontaktieren Sie den Support:\n@VPS24H",
   "gift_reward_unlocked": "🎊 <b>Besonderes Geschenk für Sie!</b>\n\n✅ Sie haben 30 Empfehlungen erreicht!\n🎁 Eine $10-Geschenkkarte gehört Ihnen.\n\n📞 Kontaktieren Sie jetzt den Support:\n@VPS24H",
-  "referral_new_join": "🎉 <b>Erfolgreiche Empfehlung!</b>\n\n👤 <b>{name}</b> ist über Ihren Link beigetreten!\n👥 Ihre Empfehlungen gesamt: <b>{count}</b>"
+  "referral_new_join": "🎉 <b>Erfolgreiche Empfehlung!</b>\n\n👤 <b>{name}</b> ist über Ihren Link beigetreten!\n👥 Ihre Empfehlungen gesamt: <b>{count}</b>",
+  "delivery_instant": "Sofort",
+  "stock_available": "{count} verfügbar",
+  "out_of_stock_label": "⚠️ Nicht vorrätig",
+  "btn_out_of_stock": "❌ Nicht vorrätig",
+  "product_not_found": "Produkt nicht gefunden.",
+  "product_unavailable": "Dieses Produkt ist nicht mehr verfügbar."
 }
