@@ -75,12 +75,14 @@ class I18n:
         If the stored value matches any known 'delivery_instant' translation
         (e.g. 'فوری', 'Instant', 'فوري', 'Sofort', etc.), return the correct
         translation for the requested language.  Otherwise return the value as-is.
+        Empty or whitespace-only values return an empty string.
         """
-        if not delivery_time:
-            return delivery_time
-        if delivery_time.strip().lower() in self._instant_delivery_values:
+        normalized = (delivery_time or "").strip()
+        if not normalized:
+            return ""
+        if normalized.lower() in self._instant_delivery_values:
             return self.get("delivery_instant", lang)
-        return delivery_time
+        return normalized
 
     def reload(self):
         self._translations.clear()
