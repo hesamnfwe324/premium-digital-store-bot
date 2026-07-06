@@ -79,5 +79,11 @@
   "gift_reward_progress": "🎁 <b>Programa de Premio Regalo</b>\n\n¡Invita a 30 personas y obtén una tarjeta de regalo de $10 GRATIS!\n\n👥 Personas invitadas: <b>{count}</b>\n🎯 Hasta el premio: <b>{remaining}</b> más\n\n{progress_bar}",
   "gift_reward_earned": "🎉 <b>¡Felicitaciones! ¡Tu regalo está listo!</b>\n\n✅ ¡Has invitado a 30 personas!\n🎁 Una tarjeta de regalo de $10 está reservada para ti.\n\n📞 Contacta con soporte:\n@VPS24H",
   "gift_reward_unlocked": "🎊 <b>¡Regalo especial para ti!</b>\n\n✅ ¡Has alcanzado 30 referidos!\n🎁 Una tarjeta de regalo de $10 es tuya.\n\n📞 Contacta con soporte ahora:\n@VPS24H",
-  "referral_new_join": "🎉 <b>¡Referido exitoso!</b>\n\n👤 <b>{name}</b> se unió usando tu enlace de invitación!\n👥 Total de referidos: <b>{count}</b>"
+  "referral_new_join": "🎉 <b>¡Referido exitoso!</b>\n\n👤 <b>{name}</b> se unió usando tu enlace de invitación!\n👥 Total de referidos: <b>{count}</b>",
+  "delivery_instant": "Inmediata",
+  "stock_available": "{count} disponibles",
+  "out_of_stock_label": "⚠️ Sin stock",
+  "btn_out_of_stock": "❌ Sin stock",
+  "product_not_found": "Producto no encontrado.",
+  "product_unavailable": "Este producto ya no está disponible."
 }
