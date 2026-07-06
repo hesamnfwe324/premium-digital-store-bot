@@ -79,5 +79,11 @@
   "gift_reward_progress": "🎁 <b>礼品奖励计划</b>\n\n邀请30人，免费获得$10礼品卡！\n\n👥 已邀请人数：<b>{count}</b>\n🎯 距奖励还需：<b>{remaining}</b>人\n\n{progress_bar}",
   "gift_reward_earned": "🎉 <b>恭喜！您的礼品已准备好！</b>\n\n✅ 您已邀请了30人！\n🎁 一张$10礼品卡已为您预留。\n\n📞 联系客服领取您的奖励：\n@VPS24H",
   "gift_reward_unlocked": "🎊 <b>给您的特别礼品！</b>\n\n✅ 您已达到30个推荐！\n🎁 $10礼品卡归您所有。\n\n📞 立即联系客服：\n@VPS24H",
-  "referral_new_join": "🎉 <b>推荐成功！</b>\n\n👤 <b>{name}</b> 通过您的邀请链接加入了！\n👥 您的推荐总数：<b>{count}</b>"
+  "referral_new_join": "🎉 <b>推荐成功！</b>\n\n👤 <b>{name}</b> 通过您的邀请链接加入了！\n👥 您的推荐总数：<b>{count}</b>",
+  "delivery_instant": "即时",
+  "stock_available": "库存 {count}",
+  "out_of_stock_label": "⚠️ 缺货",
+  "btn_out_of_stock": "❌ 缺货",
+  "product_not_found": "找不到产品。",
+  "product_unavailable": "此产品已不再提供。"
 }
