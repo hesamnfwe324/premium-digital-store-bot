@@ -10,7 +10,7 @@ from config import settings
 
 router = Router()
 
-GIFT_REWARD_THRESHOLD = 30
+GIFT_REWARD_THRESHOLD = 20
 
 
 @router.callback_query(F.data == "menu:home")
@@ -49,7 +49,7 @@ async def handle_settings(callback: CallbackQuery, user_lang: str = "en"):
 
 @router.callback_query(F.data == "menu:about")
 async def handle_about(callback: CallbackQuery, user_lang: str = "en"):
-    text = get_text("about", user_lang, support=settings.SUPPORT_USERNAME)
+    text = get_text("about", user_lang)
     try:
         await callback.message.edit_text(text, reply_markup=get_back_keyboard(user_lang), parse_mode="HTML")
     except Exception:
@@ -75,8 +75,8 @@ async def handle_gift_reward(callback: CallbackQuery, session: AsyncSession, use
     count = result.scalar() or 0
     remaining = max(0, GIFT_REWARD_THRESHOLD - count)
     filled = min(count, GIFT_REWARD_THRESHOLD)
-    bar_filled = "🟩" * (filled // 3)
-    bar_empty = "⬜" * ((GIFT_REWARD_THRESHOLD - filled) // 3)
+    bar_filled = "🟩" * (filled // 2)
+    bar_empty = "⬜" * ((GIFT_REWARD_THRESHOLD - filled) // 2)
     progress_bar = bar_filled + bar_empty
 
     if count >= GIFT_REWARD_THRESHOLD:
