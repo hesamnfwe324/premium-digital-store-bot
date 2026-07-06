@@ -19,11 +19,6 @@ async def _get_user_lang(session: AsyncSession, user_telegram_id: int) -> str:
     return user.language_code if user and user.language_code else "en"
 
 
-def _rate_order_keyboard(order_id: int, user_lang: str) -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=get_text("btn_rate_order", user_lang), callback_data=f"rate_order:{order_id}")],
-    ])
-
 
 async def _update_user_stats(session: AsyncSession, order: Order) -> None:
     try:
@@ -128,9 +123,8 @@ async def handle_admin_deliver(callback: CallbackQuery, session: AsyncSession):
             f"📦 Order: <code>#{order.order_number}</code>\n\n"
             f"<b>Your Product:</b>\n{content}\n\n"
             "✅ Thank you for shopping with us!"
-            + get_text("order_delivered_rate_hint", user_lang)
         )
-        await notif.notify_user(order.user_telegram_id, user_text, keyboard=_rate_order_keyboard(order.id, user_lang))
+        await notif.notify_user(order.user_telegram_id, user_text)
         await callback.answer("✅ Order delivered!", show_alert=True)
     else:
         await session.rollback()
@@ -163,9 +157,8 @@ async def handle_admin_confirm_payment(callback: CallbackQuery, session: AsyncSe
                 f"📦 Order: <code>#{order.order_number}</code>\n\n"
                 f"<b>Your Product:</b>\n{content}\n\n"
                 "✅ Thank you for shopping with us!"
-                + get_text("order_delivered_rate_hint", user_lang)
             )
-            await notif.notify_user(order.user_telegram_id, user_text, keyboard=_rate_order_keyboard(order.id, user_lang))
+            await notif.notify_user(order.user_telegram_id, user_text)
         else:
             user_text = (
                 f"✅ Payment confirmed for order <code>#{order.order_number}</code>.\n"
