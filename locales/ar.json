@@ -155,5 +155,9 @@
   "loyalty_tier_silver": "🥈 فضي",
   "loyalty_tier_gold": "🥇 ذهبي",
   "loyalty_tier_platinum": "💎 بلاتيني",
-  "welcome_discount_banner": "🎁 <b>جديد هنا؟</b> استخدم الرمز <code>WELCOME10</code> للحصول على <b>خصم 10%</b> على طلبك الأول!"
+  "welcome_discount_banner": "🎁 <b>جديد هنا؟</b> استخدم الرمز <code>WELCOME10</code> للحصول على <b>خصم 10%</b> على طلبك الأول!",
+  "discount_valid_info": "✅ <b>رمز الخصم صالح!</b>\n\n🎫 الرمز: <b>{code}</b>\n💰 توفيرك: <b>{saved}</b>\n\n⚠️ هذا الرمز ينطبق على الطلبات <b>التي تزيد عن ${min_order} USDT</b>.\nسيتم تطبيقه تلقائياً عند الدفع.",
+  "discount_not_found": "❌ <b>الرمز غير موجود.</b>\n\nرمز الخصم هذا غير موجود. يرجى التحقق من الرمز والمحاولة مرة أخرى.",
+  "discount_expired": "⏰ <b>انتهت صلاحية الرمز.</b>\n\nانتهت صلاحية رمز الخصم هذا أو تجاوز حد الاستخدام.",
+  "discount_not_eligible": "🚫 <b>غير مؤهل.</b>\n\nهذا الرمز للطلبات الأولى فقط. لقد قمت بالفعل بتقديم طلب."
 }
