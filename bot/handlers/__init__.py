@@ -9,7 +9,6 @@ from .payment import router as payment_router
 from .wallet import router as wallet_router
 from .support import router as support_router
 from .deals import router as deals_router
-from .reviews import router as reviews_router
 from .loyalty import router as loyalty_router
 from .admin import router as admin_router
 
@@ -25,7 +24,6 @@ def setup_routers() -> Router:
     main_router.include_router(wallet_router)
     main_router.include_router(support_router)
     main_router.include_router(deals_router)
-    main_router.include_router(reviews_router)
     main_router.include_router(loyalty_router)
     main_router.include_router(admin_router)
     return main_router
