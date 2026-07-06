@@ -155,5 +155,9 @@
   "loyalty_tier_silver": "🥈 Argent",
   "loyalty_tier_gold": "🥇 Or",
   "loyalty_tier_platinum": "💎 Platine",
-  "welcome_discount_banner": "🎁 <b>Nouveau ici ?</b> Utilisez le code <code>WELCOME10</code> pour obtenir <b>10% de RÉDUCTION</b> sur votre première commande !"
+  "welcome_discount_banner": "🎁 <b>Nouveau ici ?</b> Utilisez le code <code>WELCOME10</code> pour obtenir <b>10% de RÉDUCTION</b> sur votre première commande !",
+  "discount_valid_info": "✅ <b>Code de réduction valide!</b>\n\n🎫 Code: <b>{code}</b>\n💰 Votre économie: <b>{saved}</b>\n\n⚠️ Ce code s'applique aux commandes <b>supérieures à ${min_order} USDT</b>.\nIl sera appliqué automatiquement au paiement.",
+  "discount_not_found": "❌ <b>Code introuvable.</b>\n\nCe code de réduction n'existe pas. Veuillez vérifier le code et réessayer.",
+  "discount_expired": "⏰ <b>Code expiré.</b>\n\nCe code de réduction a expiré ou a atteint sa limite d'utilisation.",
+  "discount_not_eligible": "🚫 <b>Non éligible.</b>\n\nCe code est réservé aux premières commandes. Vous avez déjà passé une commande."
 }
