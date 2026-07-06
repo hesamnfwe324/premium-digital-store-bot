@@ -79,5 +79,11 @@
   "gift_reward_progress": "🎁 <b>Programme de Récompense Cadeau</b>\n\nInvitez 30 personnes et obtenez une carte cadeau de $10 GRATUITE!\n\n👥 Personnes invitées: <b>{count}</b>\n🎯 Jusqu'à la récompense: <b>{remaining}</b> de plus\n\n{progress_bar}",
   "gift_reward_earned": "🎉 <b>Félicitations! Votre cadeau est prêt!</b>\n\n✅ Vous avez invité 30 personnes!\n🎁 Une carte cadeau de $10 est réservée pour vous.\n\n📞 Contactez le support:\n@VPS24H",
   "gift_reward_unlocked": "🎊 <b>Cadeau spécial pour vous!</b>\n\n✅ Vous avez atteint 30 parrainages!\n🎁 Une carte cadeau de $10 est à vous.\n\n📞 Contactez le support maintenant:\n@VPS24H",
-  "referral_new_join": "🎉 <b>Parrainage réussi!</b>\n\n👤 <b>{name}</b> a rejoint en utilisant votre lien!\n👥 Total de parrainages: <b>{count}</b>"
+  "referral_new_join": "🎉 <b>Parrainage réussi!</b>\n\n👤 <b>{name}</b> a rejoint en utilisant votre lien!\n👥 Total de parrainages: <b>{count}</b>",
+  "delivery_instant": "Immédiate",
+  "stock_available": "{count} disponibles",
+  "out_of_stock_label": "⚠️ Rupture de stock",
+  "btn_out_of_stock": "❌ Rupture de stock",
+  "product_not_found": "Produit introuvable.",
+  "product_unavailable": "Ce produit n'est plus disponible."
 }
