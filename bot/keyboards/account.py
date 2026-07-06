@@ -1,6 +1,8 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from bot.utils.i18n import get_text
 
+SUPPORT_URL = "https://t.me/VPS24H"
+
 
 def get_account_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
     t = lambda key: get_text(key, lang)
@@ -51,6 +53,7 @@ def get_settings_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
 def get_support_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
     t = lambda key: get_text(key, lang)
     buttons = [
+        [InlineKeyboardButton(text=t("btn_contact_support"), url=SUPPORT_URL)],
         [InlineKeyboardButton(text=t("btn_open_ticket"), callback_data="support:open_ticket")],
         [InlineKeyboardButton(text=t("btn_view_tickets"), callback_data="support:my_tickets")],
         [InlineKeyboardButton(text=t("btn_faq"), callback_data="support:faq")],
