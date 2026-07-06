@@ -13,18 +13,21 @@ def get_admin_keyboard() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="💳 Payments", callback_data="admin:pending_payments"),
+            InlineKeyboardButton(text="💰 Wallet Deposits", callback_data="admin:wallet_deposits"),
+        ],
+        [
             InlineKeyboardButton(text="🎁 Inventory", callback_data="admin_product:inventory"),
-        ],
-        [
             InlineKeyboardButton(text="🎫 Discount Codes", callback_data="admin:discounts"),
+        ],
+        [
             InlineKeyboardButton(text="🎯 Referrals", callback_data="admin:referrals"),
-        ],
-        [
             InlineKeyboardButton(text="🎫 Tickets", callback_data="admin:tickets"),
-            InlineKeyboardButton(text="📢 Broadcast", callback_data="admin:broadcast"),
         ],
         [
+            InlineKeyboardButton(text="📢 Broadcast", callback_data="admin:broadcast"),
             InlineKeyboardButton(text="📈 Analytics", callback_data="admin:analytics"),
+        ],
+        [
             InlineKeyboardButton(text="⚙️ Settings", callback_data="admin:settings"),
         ],
     ]

@@ -3,6 +3,10 @@ from aiogram.types import CallbackQuery, Message
 from config import settings
 
 
+def is_admin(user_id: int) -> bool:
+    return user_id in settings.admin_list
+
+
 def admin_only(func):
     """Decorator that blocks non-admins from callback handlers."""
     @wraps(func)

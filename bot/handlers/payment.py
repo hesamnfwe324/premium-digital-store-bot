@@ -7,13 +7,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from database.models import (
     Product, Order, CryptoCurrency,
-    CRYPTO_NETWORK_NAMES, CRYPTO_EMOJIS,
+    CRYPTO_NETWORK_NAMES, CRYPTO_EMOJIS, Wallet,
 )
 from bot.services.order_service import OrderService
 from bot.services.payment_service import PaymentService, CRYPTO_ADDRESSES
-from bot.keyboards.payment import get_crypto_keyboard, get_payment_submitted_keyboard
+from bot.keyboards.payment import get_crypto_keyboard, get_payment_submitted_keyboard, get_wallet_pay_keyboard
 from bot.keyboards.account import get_back_keyboard
 from bot.utils.i18n import get_text
+from bot.utils.helpers import format_price
 from bot.utils.qr_code import generate_qr_code
 from bot.utils.logger import logger
 from config import settings
@@ -35,6 +36,56 @@ async def handle_buy(callback: CallbackQuery, session: AsyncSession, user_lang: 
         await callback.answer(get_text("out_of_stock", user_lang), show_alert=True)
         return
 
+    # Check wallet balance — offer wallet payment if sufficient
+    wallet_res = await session.execute(
+        select(Wallet).where(Wallet.user_telegram_id == callback.from_user.id)
+    )
+    wallet = wallet_res.scalar_one_or_none()
+    wallet_balance = wallet.balance if wallet else 0.0
+    can_pay_wallet = wallet_balance >= product.price_usdt
+
+    order_service = OrderService(session)
+    order = await order_service.create_order(
+        user_telegram_id=callback.from_user.id,
+        product_id=product_id,
+    )
+    await session.commit()
+
+    if not order:
+        await callback.answer("❌ Failed to create order. Please try again.", show_alert=True)
+        return
+
+    if can_pay_wallet:
+        # Cancel the just-created pending order; wallet_pay handler creates its own
+        from database.models import OrderStatus
+        order.status = OrderStatus.CANCELLED
+        await session.commit()
+        text = get_text("select_payment_method", user_lang,
+                        balance=format_price(wallet_balance),
+                        price=format_price(product.price_usdt))
+        kb = get_wallet_pay_keyboard(product_id, user_lang, wallet_balance)
+    else:
+        text = get_text("select_crypto", user_lang)
+        kb = get_crypto_keyboard(order.id, user_lang)
+
+    try:
+        await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+    except Exception:
+        await callback.message.answer(text, reply_markup=kb, parse_mode="HTML")
+    await callback.answer()
+
+
+@router.callback_query(F.data.startswith("buy_crypto:"))
+async def handle_buy_crypto_only(callback: CallbackQuery, session: AsyncSession, user_lang: str = "en"):
+    """User chose to pay with crypto even though they have wallet balance."""
+    product_id = int(callback.data.split(":")[1])
+    result = await session.execute(select(Product).where(Product.id == product_id))
+    product = result.scalar_one_or_none()
+
+    if not product or not product.is_active or product.quantity <= 0:
+        await callback.answer(get_text("out_of_stock", user_lang), show_alert=True)
+        return
+
     order_service = OrderService(session)
     order = await order_service.create_order(
         user_telegram_id=callback.from_user.id,
@@ -48,7 +99,6 @@ async def handle_buy(callback: CallbackQuery, session: AsyncSession, user_lang: 
 
     text = get_text("select_crypto", user_lang)
     kb = get_crypto_keyboard(order.id, user_lang)
-
     try:
         await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
     except Exception:

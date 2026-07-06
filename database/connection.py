@@ -277,5 +277,15 @@ async def init_db():
     )
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Idempotent column additions for live DB migrations
+        try:
+            await conn.execute(
+                __import__("sqlalchemy").text(
+                    "ALTER TABLE payments ADD COLUMN IF NOT EXISTS "
+                    "is_wallet_deposit BOOLEAN NOT NULL DEFAULT FALSE"
+                )
+            )
+        except Exception:
+            pass  # column already exists or DDL not supported
     logger.info("✅ Database initialized")
     await seed_products()

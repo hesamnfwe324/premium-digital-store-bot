@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import BigInteger, Integer, Float, String, DateTime, Enum, ForeignKey, Text
+from sqlalchemy import BigInteger, Integer, Float, String, DateTime, Enum, ForeignKey, Text, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 from database.connection import Base
@@ -60,6 +60,7 @@ class Payment(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     confirmed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    is_wallet_deposit: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, server_default="false")
 
     order: Mapped[Optional["Order"]] = relationship("Order", back_populates="payment", foreign_keys="Order.payment_id")
 

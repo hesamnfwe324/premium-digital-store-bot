@@ -3,6 +3,18 @@ from database.models import CryptoCurrency, CRYPTO_NETWORK_NAMES, CRYPTO_EMOJIS
 from bot.utils.i18n import get_text
 
 
+def get_wallet_pay_keyboard(product_id: int, lang: str = "en", balance: float = 0.0) -> InlineKeyboardMarkup:
+    """Payment method selection when wallet has sufficient balance."""
+    t = lambda key: get_text(key, lang)
+    btn_wallet_label = t("btn_pay_from_wallet") + f" (${balance:.2f})"
+    buttons = [
+        [InlineKeyboardButton(text=btn_wallet_label, callback_data=f"wallet_pay:{product_id}")],
+        [InlineKeyboardButton(text="💳 " + t("btn_pay_now"), callback_data=f"buy_crypto:{product_id}")],
+        [InlineKeyboardButton(text=t("btn_back"), callback_data="menu:home")],
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
 def get_crypto_keyboard(order_id: int, lang: str = "en") -> InlineKeyboardMarkup:
     buttons = []
     row = []

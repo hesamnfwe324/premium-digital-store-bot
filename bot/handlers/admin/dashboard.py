@@ -67,14 +67,17 @@ async def handle_admin_dashboard(callback: CallbackQuery, session: AsyncSession)
 @router.callback_query(F.data == "admin:pending_payments")
 @admin_only
 async def handle_admin_pending_payments(callback: CallbackQuery, session: AsyncSession):
+    # Only show product purchase payments (not wallet deposits)
     result = await session.execute(
-        select(Payment).where(Payment.status == PaymentStatus.SUBMITTED)
-        .order_by(Payment.created_at.asc()).limit(15)
+        select(Payment).where(
+            Payment.status == PaymentStatus.SUBMITTED,
+            Payment.is_wallet_deposit == False,
+        ).order_by(Payment.created_at.asc()).limit(15)
     )
     payments = list(result.scalars().all())
 
     if not payments:
-        await callback.answer("No pending payments.", show_alert=True)
+        await callback.answer("No pending product payments.", show_alert=True)
         return
 
     buttons = []
@@ -89,6 +92,67 @@ async def handle_admin_pending_payments(callback: CallbackQuery, session: AsyncS
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons),
         parse_mode="HTML",
     )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "admin:wallet_deposits")
+@admin_only
+async def handle_admin_wallet_deposits(callback: CallbackQuery, session: AsyncSession):
+    result = await session.execute(
+        select(Payment).where(
+            Payment.status == PaymentStatus.SUBMITTED,
+            Payment.is_wallet_deposit == True,
+        ).order_by(Payment.created_at.asc()).limit(15)
+    )
+    deposits = list(result.scalars().all())
+
+    if not deposits:
+        await callback.answer("No pending wallet deposits.", show_alert=True)
+        return
+
+    buttons = []
+    for p in deposits:
+        buttons.append([InlineKeyboardButton(
+            text=f"💰 ${p.amount_usdt:.2f} {p.currency.value} — user:{p.user_telegram_id} — {format_datetime(p.created_at)[:10]}",
+            callback_data=f"admin_deposit_detail:{p.id}",
+        )])
+    buttons.append([InlineKeyboardButton(text="◀️ Back", callback_data="admin:menu")])
+    await callback.message.edit_text(
+        f"💰 <b>Pending Wallet Deposits ({len(deposits)})</b>\n\nSelect to confirm or reject:",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons),
+        parse_mode="HTML",
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data.startswith("admin_deposit_detail:"))
+@admin_only
+async def handle_admin_deposit_detail(callback: CallbackQuery, session: AsyncSession):
+    payment_id = int(callback.data.split(":")[1])
+    result = await session.execute(select(Payment).where(Payment.id == payment_id))
+    payment = result.scalar_one_or_none()
+    if not payment:
+        await callback.answer("Not found.", show_alert=True)
+        return
+    text = (
+        f"💰 <b>Wallet Deposit #{payment.id}</b>\n\n"
+        f"👤 User: <code>{payment.user_telegram_id}</code>\n"
+        f"💵 Amount: <b>${payment.amount_usdt:.2f} USDT</b>\n"
+        f"🌐 Network: <b>{payment.currency.value}</b>\n"
+        f"📋 TXID: <code>{payment.txid or payment.transaction_link or 'N/A'}</code>\n"
+        f"📅 Submitted: {format_datetime(payment.created_at)}"
+    )
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    kb = InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text="✅ Credit Wallet", callback_data=f"admin_confirm_deposit:{payment_id}"),
+        InlineKeyboardButton(text="❌ Reject", callback_data=f"admin_reject_deposit:{payment_id}"),
+    ], [
+        InlineKeyboardButton(text="◀️ Back", callback_data="admin:wallet_deposits"),
+    ]])
+    try:
+        await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+    except Exception:
+        await callback.message.answer(text, reply_markup=kb, parse_mode="HTML")
     await callback.answer()
 
 

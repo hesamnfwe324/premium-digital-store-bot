@@ -5,7 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from database.models import User, Wallet
-from bot.keyboards.account import get_account_keyboard, get_back_keyboard
+from bot.keyboards.account import get_account_keyboard, get_back_keyboard, get_wallet_keyboard
 from bot.utils.i18n import get_text
 from bot.utils.helpers import format_price, format_datetime
 from config import settings
@@ -60,7 +60,7 @@ async def handle_wallet(callback: CallbackQuery, session: AsyncSession, user_lan
         withdrawn=format_price(wallet.total_withdrawn),
         referral=format_price(wallet.total_earned_referral),
     )
-    kb = get_back_keyboard(user_lang)
+    kb = get_wallet_keyboard(user_lang)
     try:
         await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
     except Exception:

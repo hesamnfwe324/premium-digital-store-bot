@@ -13,6 +13,20 @@ def get_account_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
+def get_wallet_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
+    """Wallet screen: Top Up | History | Back."""
+    t = lambda key: get_text(key, lang)
+    buttons = [
+        [
+            InlineKeyboardButton(text=t("btn_topup_wallet"), callback_data="wallet:topup"),
+            InlineKeyboardButton(text=t("btn_tx_history"), callback_data="wallet:history"),
+        ],
+        [InlineKeyboardButton(text=t("btn_back"), callback_data="menu:my_account")],
+        [InlineKeyboardButton(text=t("btn_home"), callback_data="menu:home")],
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
 def get_orders_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
     t = lambda key: get_text(key, lang)
     buttons = [
