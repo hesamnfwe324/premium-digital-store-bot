@@ -23,7 +23,7 @@ async def on_startup(bot: Bot) -> None:
         await bot.set_webhook(
             url=settings.webhook_url,
             allowed_updates=["message", "callback_query", "inline_query"],
-            drop_pending_updates=True,
+            drop_pending_updates=False,
         )
         logger.info(f"Webhook set: {settings.webhook_url}")
     else:
@@ -36,8 +36,8 @@ async def on_startup(bot: Bot) -> None:
 
 async def on_shutdown(bot: Bot) -> None:
     logger.info("Bot is shutting down...")
-    if settings.WEBHOOK_ENABLED:
-        await bot.delete_webhook()
+    # Do NOT delete webhook on shutdown — Render free tier restarts/sleeps the service
+    # and deleting the webhook would break Telegram delivery until next full restart.
     await bot.session.close()
 
 
@@ -50,7 +50,6 @@ async def health_handler(request: web.Request) -> web.Response:
 
 
 def _build_dispatcher() -> Dispatcher:
-    """Create and configure a Dispatcher with all middlewares and routers."""
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage)
 
