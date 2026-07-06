@@ -25,9 +25,10 @@ AsyncSessionLocal = async_sessionmaker(
     autoflush=False,
 )
 
-# Unique, realistic stock levels — no two alike, range 18-83
 _PREMIUM_QTY = [47, 83, 62, 38, 71, 29, 54, 19, 43, 27]
 _GIFT_QTY    = [56, 34, 78, 41, 67, 25, 52, 39, 63, 18, 44, 31, 22]
+_VISA_QTY    = [23, 41, 17, 36, 28, 15]
+_MC_QTY      = [19, 33, 45, 22, 38, 27]
 
 
 async def get_db():
@@ -150,11 +151,88 @@ async def _seed_gift_cards(session):
     logger.info(f"✅ Seeded {len(products)} gift cards")
 
 
+async def _seed_visa_cards(session):
+    from database.models import Product, ProductCategory, ProductType
+    products = [
+        Product(name="ویزا مجازی $5", name_en="Virtual Visa $5", name_fa="ویزا مجازی $5",
+                description="کارت ویزای مجازی با موجودی $5 — قابل استفاده در تمام سایت‌های بین‌المللی",
+                description_en="Virtual Visa card with $5 balance — accepted worldwide",
+                category=ProductCategory.VISA, product_type=ProductType.VIRTUAL_VISA,
+                price=5.5, price_usdt=5.5, quantity=_VISA_QTY[0], delivery_time="فوری", is_active=True, sort_order=30),
+        Product(name="ویزا مجازی $10", name_en="Virtual Visa $10", name_fa="ویزا مجازی $10",
+                description="کارت ویزای مجازی با موجودی $10 — قابل استفاده در تمام سایت‌های بین‌المللی",
+                description_en="Virtual Visa card with $10 balance — accepted worldwide",
+                category=ProductCategory.VISA, product_type=ProductType.VIRTUAL_VISA,
+                price=11.0, price_usdt=11.0, quantity=_VISA_QTY[1], delivery_time="فوری", is_active=True, sort_order=31),
+        Product(name="ویزا مجازی $20", name_en="Virtual Visa $20", name_fa="ویزا مجازی $20",
+                description="کارت ویزای مجازی با موجودی $20 — قابل استفاده در تمام سایت‌های بین‌المللی",
+                description_en="Virtual Visa card with $20 balance — accepted worldwide",
+                category=ProductCategory.VISA, product_type=ProductType.VIRTUAL_VISA,
+                price=21.5, price_usdt=21.5, quantity=_VISA_QTY[2], delivery_time="فوری", is_active=True, sort_order=32),
+        Product(name="ویزا مجازی $25", name_en="Virtual Visa $25", name_fa="ویزا مجازی $25",
+                description="کارت ویزای مجازی با موجودی $25 — قابل استفاده در تمام سایت‌های بین‌المللی",
+                description_en="Virtual Visa card with $25 balance — accepted worldwide",
+                category=ProductCategory.VISA, product_type=ProductType.VIRTUAL_VISA,
+                price=26.5, price_usdt=26.5, quantity=_VISA_QTY[3], delivery_time="فوری", is_active=True, sort_order=33),
+        Product(name="ویزا مجازی $50", name_en="Virtual Visa $50", name_fa="ویزا مجازی $50",
+                description="کارت ویزای مجازی با موجودی $50 — قابل استفاده در تمام سایت‌های بین‌المللی",
+                description_en="Virtual Visa card with $50 balance — accepted worldwide",
+                category=ProductCategory.VISA, product_type=ProductType.VIRTUAL_VISA,
+                price=52.5, price_usdt=52.5, quantity=_VISA_QTY[4], delivery_time="فوری", is_active=True, sort_order=34),
+        Product(name="ویزا مجازی $100", name_en="Virtual Visa $100", name_fa="ویزا مجازی $100",
+                description="کارت ویزای مجازی با موجودی $100 — قابل استفاده در تمام سایت‌های بین‌المللی",
+                description_en="Virtual Visa card with $100 balance — accepted worldwide",
+                category=ProductCategory.VISA, product_type=ProductType.VIRTUAL_VISA,
+                price=103.0, price_usdt=103.0, quantity=_VISA_QTY[5], delivery_time="فوری", is_active=True, sort_order=35),
+    ]
+    session.add_all(products)
+    await session.commit()
+    logger.info(f"✅ Seeded {len(products)} Visa cards")
+
+
+async def _seed_mastercards(session):
+    from database.models import Product, ProductCategory, ProductType
+    products = [
+        Product(name="مسترکارت مجازی $5", name_en="Virtual Mastercard $5", name_fa="مسترکارت مجازی $5",
+                description="کارت مسترکارت مجازی با موجودی $5 — پذیرفته شده در سراسر جهان",
+                description_en="Virtual Mastercard with $5 balance — accepted worldwide",
+                category=ProductCategory.MASTERCARD, product_type=ProductType.VIRTUAL_MASTERCARD,
+                price=5.5, price_usdt=5.5, quantity=_MC_QTY[0], delivery_time="فوری", is_active=True, sort_order=40),
+        Product(name="مسترکارت مجازی $10", name_en="Virtual Mastercard $10", name_fa="مسترکارت مجازی $10",
+                description="کارت مسترکارت مجازی با موجودی $10 — پذیرفته شده در سراسر جهان",
+                description_en="Virtual Mastercard with $10 balance — accepted worldwide",
+                category=ProductCategory.MASTERCARD, product_type=ProductType.VIRTUAL_MASTERCARD,
+                price=11.0, price_usdt=11.0, quantity=_MC_QTY[1], delivery_time="فوری", is_active=True, sort_order=41),
+        Product(name="مسترکارت مجازی $20", name_en="Virtual Mastercard $20", name_fa="مسترکارت مجازی $20",
+                description="کارت مسترکارت مجازی با موجودی $20 — پذیرفته شده در سراسر جهان",
+                description_en="Virtual Mastercard with $20 balance — accepted worldwide",
+                category=ProductCategory.MASTERCARD, product_type=ProductType.VIRTUAL_MASTERCARD,
+                price=21.5, price_usdt=21.5, quantity=_MC_QTY[2], delivery_time="فوری", is_active=True, sort_order=42),
+        Product(name="مسترکارت مجازی $25", name_en="Virtual Mastercard $25", name_fa="مسترکارت مجازی $25",
+                description="کارت مسترکارت مجازی با موجودی $25 — پذیرفته شده در سراسر جهان",
+                description_en="Virtual Mastercard with $25 balance — accepted worldwide",
+                category=ProductCategory.MASTERCARD, product_type=ProductType.VIRTUAL_MASTERCARD,
+                price=26.5, price_usdt=26.5, quantity=_MC_QTY[3], delivery_time="فوری", is_active=True, sort_order=43),
+        Product(name="مسترکارت مجازی $50", name_en="Virtual Mastercard $50", name_fa="مسترکارت مجازی $50",
+                description="کارت مسترکارت مجازی با موجودی $50 — پذیرفته شده در سراسر جهان",
+                description_en="Virtual Mastercard with $50 balance — accepted worldwide",
+                category=ProductCategory.MASTERCARD, product_type=ProductType.VIRTUAL_MASTERCARD,
+                price=52.5, price_usdt=52.5, quantity=_MC_QTY[4], delivery_time="فوری", is_active=True, sort_order=44),
+        Product(name="مسترکارت مجازی $100", name_en="Virtual Mastercard $100", name_fa="مسترکارت مجازی $100",
+                description="کارت مسترکارت مجازی با موجودی $100 — پذیرفته شده در سراسر جهان",
+                description_en="Virtual Mastercard with $100 balance — accepted worldwide",
+                category=ProductCategory.MASTERCARD, product_type=ProductType.VIRTUAL_MASTERCARD,
+                price=103.0, price_usdt=103.0, quantity=_MC_QTY[5], delivery_time="فوری", is_active=True, sort_order=45),
+    ]
+    session.add_all(products)
+    await session.commit()
+    logger.info(f"✅ Seeded {len(products)} Mastercards")
+
+
 async def _fix_uniform_quantities(session):
-    """Fix products that have the old default quantity of 999 — assign unique realistic values."""
-    from sqlalchemy import select, update
-    from database.models import Product, ProductCategory
-    all_qtys = _PREMIUM_QTY + _GIFT_QTY
+    from sqlalchemy import select
+    from database.models import Product
+    all_qtys = _PREMIUM_QTY + _GIFT_QTY + _VISA_QTY + _MC_QTY
     result = await session.execute(
         select(Product).where(Product.quantity == 999).order_by(Product.id)
     )
@@ -176,6 +254,8 @@ async def seed_products():
         for category, seeder in [
             (ProductCategory.PREMIUM_SERVICE, _seed_premium_services),
             (ProductCategory.GIFT_CARD, _seed_gift_cards),
+            (ProductCategory.VISA, _seed_visa_cards),
+            (ProductCategory.MASTERCARD, _seed_mastercards),
         ]:
             result = await session.execute(
                 select(func.count()).select_from(Product).where(Product.category == category)
