@@ -4,11 +4,33 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from database.models import Product, GiftCard, VisaCard, MasterCard, ProductCategory
+from database.models import Product, GiftCard, VisaCard, MasterCard, ProductCategory, User
 from bot.services.delivery_service import DeliveryService
+from bot.services.stock_notification_service import StockNotificationService
+from bot.services.notification_service import NotificationService
+from bot.utils.i18n import get_text
 from config import settings
 
 router = Router()
+
+
+async def _notify_back_in_stock(bot, session: AsyncSession, product: Product) -> None:
+    """If a product just went from out-of-stock to in-stock, alert everyone waiting."""
+    notify_service = StockNotificationService(session)
+    subscribers = await notify_service.get_pending_subscribers(product.id)
+    if not subscribers:
+        return
+
+    notif = NotificationService(bot)
+    for sub in subscribers:
+        user_result = await session.execute(select(User).where(User.telegram_id == sub.user_telegram_id))
+        user = user_result.scalar_one_or_none()
+        lang = user.language_code if user and user.language_code else "en"
+        text = get_text("back_in_stock_alert", lang, name=product.get_name(lang))
+        await notif.notify_user(sub.user_telegram_id, text)
+
+    await notify_service.mark_notified(subscribers)
+    await session.commit()
 
 
 class InventoryStates(StatesGroup):
@@ -106,9 +128,12 @@ async def handle_add_gift_code(message: Message, state: FSMContext, session: Asy
     card = await delivery.add_gift_card_stock(product_id, code, pin, brand or "Gift Card", None, message.from_user.id)
     result = await session.execute(select(Product).where(Product.id == product_id))
     product = result.scalar_one_or_none()
+    was_out_of_stock = bool(product and product.quantity <= 0)
     if product:
         product.quantity += 1
     await session.commit()
+    if product and was_out_of_stock:
+        await _notify_back_in_stock(message.bot, session, product)
     await message.answer(f"✅ Gift card code added successfully! (ID: {card.id})")
 
 
@@ -138,9 +163,12 @@ async def handle_add_visa_info(message: Message, state: FSMContext, session: Asy
     card = await delivery.add_visa_card_stock(product_id, card_data, message.from_user.id)
     result = await session.execute(select(Product).where(Product.id == product_id))
     product = result.scalar_one_or_none()
+    was_out_of_stock = bool(product and product.quantity <= 0)
     if product:
         product.quantity += 1
     await session.commit()
+    if product and was_out_of_stock:
+        await _notify_back_in_stock(message.bot, session, product)
     await message.answer(f"✅ Visa card added! (ID: {card.id})")
 
 
@@ -170,7 +198,10 @@ async def handle_add_master_info(message: Message, state: FSMContext, session: A
     card = await delivery.add_master_card_stock(product_id, card_data, message.from_user.id)
     result = await session.execute(select(Product).where(Product.id == product_id))
     product = result.scalar_one_or_none()
+    was_out_of_stock = bool(product and product.quantity <= 0)
     if product:
         product.quantity += 1
     await session.commit()
+    if product and was_out_of_stock:
+        await _notify_back_in_stock(message.bot, session, product)
     await message.answer(f"✅ MasterCard added! (ID: {card.id})")

@@ -12,6 +12,8 @@ from .referral import Referral
 from .discount_code import DiscountCode, DiscountType
 from .setting import Setting
 from .language import Language
+from .review import Review
+from .stock_notification import StockNotification
 
 __all__ = [
     "User", "Product", "ProductCategory", "ProductType",
@@ -22,5 +24,6 @@ __all__ = [
     "GiftCard", "VisaCard", "MasterCard",
     "Ticket", "TicketStatus",
     "Referral", "DiscountCode", "DiscountType",
-    "Setting", "Language"
+    "Setting", "Language",
+    "Review", "StockNotification",
 ]

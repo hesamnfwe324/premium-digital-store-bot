@@ -93,10 +93,12 @@ async def handle_referral(callback: CallbackQuery, session: AsyncSession, user_l
     )
 
     from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    from urllib.parse import quote
+    share_text = quote(get_text("referral_share_text", user_lang))
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
-            text="🔗 Share Referral Link",
-            url=f"https://t.me/share/url?url={ref_link}&text=Join%20Premium%20Digital%20Store!",
+            text=get_text("btn_share_referral", user_lang),
+            url=f"https://t.me/share/url?url={ref_link}&text={share_text}",
         )],
         [InlineKeyboardButton(text=get_text("btn_back", user_lang), callback_data="menu:home")],
     ])

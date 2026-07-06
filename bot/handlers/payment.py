@@ -11,6 +11,7 @@ from database.models import (
 )
 from bot.services.order_service import OrderService
 from bot.services.payment_service import PaymentService, CRYPTO_ADDRESSES
+from bot.services.discount_service import DiscountService
 from bot.keyboards.payment import get_crypto_keyboard, get_payment_submitted_keyboard, get_wallet_pay_keyboard
 from bot.keyboards.account import get_back_keyboard
 from bot.utils.i18n import get_text
@@ -24,6 +25,23 @@ router = Router()
 
 class PaymentStates(StatesGroup):
     waiting_for_txid = State()
+
+
+async def _apply_auto_first_purchase_discount(session: AsyncSession, user_telegram_id: int, amount: float):
+    """Return (discount_code_id, discount_amount) if the user is eligible for the
+    automatic first-purchase discount code, applied transparently without requiring
+    the user to type a code."""
+    discount_service = DiscountService(session)
+    code = await discount_service.validate_code("WELCOME10", amount, user_telegram_id=user_telegram_id)
+    if not code:
+        return None, 0.0
+    discounted_total = code.apply(amount)
+    discount_amount = max(0.0, amount - discounted_total)
+    if discount_amount <= 0:
+        return None, 0.0
+    code.used_count += 1
+    await session.flush()
+    return code.id, discount_amount
 
 
 @router.callback_query(F.data.startswith("buy:"))
@@ -44,10 +62,16 @@ async def handle_buy(callback: CallbackQuery, session: AsyncSession, user_lang: 
     wallet_balance = wallet.balance if wallet else 0.0
     can_pay_wallet = wallet_balance >= product.price_usdt
 
+    discount_code_id, discount_amount = await _apply_auto_first_purchase_discount(
+        session, callback.from_user.id, product.price_usdt
+    )
+
     order_service = OrderService(session)
     order = await order_service.create_order(
         user_telegram_id=callback.from_user.id,
         product_id=product_id,
+        discount_code_id=discount_code_id,
+        discount_amount=discount_amount,
     )
     await session.commit()
 
@@ -86,10 +110,16 @@ async def handle_buy_crypto_only(callback: CallbackQuery, session: AsyncSession,
         await callback.answer(get_text("out_of_stock", user_lang), show_alert=True)
         return
 
+    discount_code_id, discount_amount = await _apply_auto_first_purchase_discount(
+        session, callback.from_user.id, product.price_usdt
+    )
+
     order_service = OrderService(session)
     order = await order_service.create_order(
         user_telegram_id=callback.from_user.id,
         product_id=product_id,
+        discount_code_id=discount_code_id,
+        discount_amount=discount_amount,
     )
     await session.commit()
 

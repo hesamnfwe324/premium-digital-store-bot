@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from database.models import Order, OrderStatus, Payment, PaymentStatus, User
@@ -8,8 +8,21 @@ from bot.services.delivery_service import DeliveryService
 from bot.services.notification_service import NotificationService
 from bot.utils.helpers import format_price, format_datetime
 from bot.utils.admin import admin_only
+from bot.utils.i18n import get_text
 
 router = Router()
+
+
+async def _get_user_lang(session: AsyncSession, user_telegram_id: int) -> str:
+    result = await session.execute(select(User).where(User.telegram_id == user_telegram_id))
+    user = result.scalar_one_or_none()
+    return user.language_code if user and user.language_code else "en"
+
+
+def _rate_order_keyboard(order_id: int, user_lang: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=get_text("btn_rate_order", user_lang), callback_data=f"rate_order:{order_id}")],
+    ])
 
 
 async def _update_user_stats(session: AsyncSession, order: Order) -> None:
@@ -109,13 +122,15 @@ async def handle_admin_deliver(callback: CallbackQuery, session: AsyncSession):
         await _update_user_stats(session, order)
         await session.commit()
         notif = NotificationService(callback.bot)
+        user_lang = await _get_user_lang(session, order.user_telegram_id)
         user_text = (
             f"🎉 <b>Your Order Has Been Delivered!</b>\n\n"
             f"📦 Order: <code>#{order.order_number}</code>\n\n"
             f"<b>Your Product:</b>\n{content}\n\n"
             "✅ Thank you for shopping with us!"
+            + get_text("order_delivered_rate_hint", user_lang)
         )
-        await notif.notify_user(order.user_telegram_id, user_text)
+        await notif.notify_user(order.user_telegram_id, user_text, keyboard=_rate_order_keyboard(order.id, user_lang))
         await callback.answer("✅ Order delivered!", show_alert=True)
     else:
         await session.rollback()
@@ -141,19 +156,22 @@ async def handle_admin_confirm_payment(callback: CallbackQuery, session: AsyncSe
             await _update_user_stats(session, order)
         await session.commit()
         notif = NotificationService(callback.bot)
+        user_lang = await _get_user_lang(session, order.user_telegram_id)
         if content:
             user_text = (
                 f"🎉 <b>Order Delivered!</b>\n\n"
                 f"📦 Order: <code>#{order.order_number}</code>\n\n"
                 f"<b>Your Product:</b>\n{content}\n\n"
                 "✅ Thank you for shopping with us!"
+                + get_text("order_delivered_rate_hint", user_lang)
             )
+            await notif.notify_user(order.user_telegram_id, user_text, keyboard=_rate_order_keyboard(order.id, user_lang))
         else:
             user_text = (
                 f"✅ Payment confirmed for order <code>#{order.order_number}</code>.\n"
                 "Your product will be delivered shortly."
             )
-        await notif.notify_user(order.user_telegram_id, user_text)
+            await notif.notify_user(order.user_telegram_id, user_text)
     try:
         await callback.message.edit_text(
             callback.message.text + "\n\n✅ <b>PAYMENT CONFIRMED</b>",

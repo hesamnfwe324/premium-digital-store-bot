@@ -22,6 +22,11 @@ def get_main_menu_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
             InlineKeyboardButton(text=t("btn_referral"), callback_data="menu:referral"),
         ],
         [
+            InlineKeyboardButton(text=t("btn_flash_deals"), callback_data="menu:deals"),
+            InlineKeyboardButton(text=t("btn_best_sellers"), callback_data="menu:best_sellers"),
+        ],
+        [
+            InlineKeyboardButton(text=t("btn_loyalty"), callback_data="menu:loyalty"),
             InlineKeyboardButton(text=t("btn_gift_reward"), callback_data="menu:gift_reward"),
         ],
         [
@@ -31,6 +36,10 @@ def get_main_menu_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
         [
             InlineKeyboardButton(text=t("btn_support"), callback_data="menu:support"),
             InlineKeyboardButton(text=t("btn_settings"), callback_data="menu:settings"),
+        ],
+        [
+            InlineKeyboardButton(text=t("btn_join_channel"), callback_data="menu:join_channel"),
+            InlineKeyboardButton(text=t("btn_terms"), callback_data="menu:terms"),
         ],
         [
             InlineKeyboardButton(text=t("btn_about"), callback_data="menu:about"),

@@ -8,6 +8,7 @@ def get_account_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text=t("btn_my_orders"), callback_data="menu:my_orders")],
         [InlineKeyboardButton(text=t("btn_wallet"), callback_data="menu:wallet")],
         [InlineKeyboardButton(text=t("btn_referral"), callback_data="menu:referral")],
+        [InlineKeyboardButton(text=t("btn_loyalty"), callback_data="menu:loyalty")],
         [InlineKeyboardButton(text=t("btn_back"), callback_data="menu:home")],
     ]
     return InlineKeyboardMarkup(inline_keyboard=buttons)

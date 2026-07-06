@@ -4,14 +4,25 @@ from database.models import Product
 from bot.utils.i18n import get_text
 
 
-def get_products_keyboard(products: List[Product], lang: str = "en", back_callback: str = "menu:home") -> InlineKeyboardMarkup:
+def get_products_keyboard(
+    products: List[Product],
+    lang: str = "en",
+    back_callback: str = "menu:home",
+    best_seller_ids: Optional[set] = None,
+) -> InlineKeyboardMarkup:
+    best_seller_ids = best_seller_ids or set()
     buttons = []
     for product in products:
         stock_emoji = "✅" if product.quantity > 0 else "❌"
         name = product.get_name(lang)
+        badge = ""
+        if product.is_on_deal:
+            badge += " 🔥"
+        if product.id in best_seller_ids:
+            badge += " 🏆"
         buttons.append([
             InlineKeyboardButton(
-                text=f"{stock_emoji} {name} — ${product.price_usdt:.2f}",
+                text=f"{stock_emoji} {name}{badge} — ${product.price_usdt:.2f}",
                 callback_data=f"product:{product.id}"
             )
         ])
@@ -21,13 +32,21 @@ def get_products_keyboard(products: List[Product], lang: str = "en", back_callba
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def get_product_detail_keyboard(product_id: int, lang: str = "en", back_callback: str = "menu:home") -> InlineKeyboardMarkup:
+def get_product_detail_keyboard(
+    product_id: int,
+    lang: str = "en",
+    back_callback: str = "menu:home",
+    in_stock: bool = True,
+) -> InlineKeyboardMarkup:
     t = lambda key: get_text(key, lang)
-    buttons = [
-        [InlineKeyboardButton(text=t("btn_buy_now"), callback_data=f"buy:{product_id}")],
-        [InlineKeyboardButton(text=t("btn_back"), callback_data=back_callback)],
-        [InlineKeyboardButton(text=t("btn_home"), callback_data="menu:home")],
-    ]
+    buttons = []
+    if in_stock:
+        buttons.append([InlineKeyboardButton(text=t("btn_buy_now"), callback_data=f"buy:{product_id}")])
+    else:
+        buttons.append([InlineKeyboardButton(text=t("btn_notify_me"), callback_data=f"notify_stock:{product_id}")])
+    buttons.append([InlineKeyboardButton(text=t("btn_view_reviews"), callback_data=f"product_reviews:{product_id}")])
+    buttons.append([InlineKeyboardButton(text=t("btn_back"), callback_data=back_callback)])
+    buttons.append([InlineKeyboardButton(text=t("btn_home"), callback_data="menu:home")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 

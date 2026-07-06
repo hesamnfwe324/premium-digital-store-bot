@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from database.models import DiscountCode
+from database.models import DiscountCode, User
 from bot.utils.logger import logger
 
 
@@ -9,7 +9,9 @@ class DiscountService:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def validate_code(self, code: str, order_amount: float) -> Optional[DiscountCode]:
+    async def validate_code(
+        self, code: str, order_amount: float, user_telegram_id: Optional[int] = None
+    ) -> Optional[DiscountCode]:
         result = await self.session.execute(
             select(DiscountCode).where(DiscountCode.code == code.upper())
         )
@@ -20,6 +22,15 @@ class DiscountService:
             return None
         if order_amount < discount.min_order_amount:
             return None
+        if discount.first_order_only:
+            if user_telegram_id is None:
+                return None
+            user_result = await self.session.execute(
+                select(User).where(User.telegram_id == user_telegram_id)
+            )
+            user = user_result.scalar_one_or_none()
+            if user is None or user.total_orders > 0:
+                return None
         return discount
 
     async def apply_code(self, code: str) -> bool:

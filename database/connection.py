@@ -273,19 +273,100 @@ async def init_db():
     from database.models import (
         User, Product, Order, Payment, Wallet, Transaction,
         GiftCard, VisaCard, MasterCard, Ticket, Referral,
-        DiscountCode, Setting, Language
+        DiscountCode, Setting, Language, Review, StockNotification
     )
+    sa = __import__("sqlalchemy")
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
         # Idempotent column additions for live DB migrations
-        try:
-            await conn.execute(
-                __import__("sqlalchemy").text(
-                    "ALTER TABLE payments ADD COLUMN IF NOT EXISTS "
-                    "is_wallet_deposit BOOLEAN NOT NULL DEFAULT FALSE"
-                )
-            )
-        except Exception:
-            pass  # column already exists or DDL not supported
+        migrations = [
+            "ALTER TABLE payments ADD COLUMN IF NOT EXISTS "
+            "is_wallet_deposit BOOLEAN NOT NULL DEFAULT FALSE",
+            "ALTER TABLE products ADD COLUMN IF NOT EXISTS "
+            "original_price DOUBLE PRECISION",
+            "ALTER TABLE products ADD COLUMN IF NOT EXISTS "
+            "deal_ends_at TIMESTAMPTZ",
+            "ALTER TABLE discount_codes ADD COLUMN IF NOT EXISTS "
+            "first_order_only BOOLEAN NOT NULL DEFAULT FALSE",
+        ]
+        for ddl in migrations:
+            try:
+                await conn.execute(sa.text(ddl))
+            except Exception:
+                pass  # column already exists or DDL not supported
     logger.info("✅ Database initialized")
     await seed_products()
+    await seed_flash_deals()
+    await seed_discount_codes()
+    await seed_default_settings()
+
+
+async def seed_flash_deals() -> None:
+    """Seed a handful of limited-time flash offers on existing products (idempotent)."""
+    from sqlalchemy import select
+    from database.models import Product
+    from datetime import datetime, timezone, timedelta
+
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(
+            select(Product).where(Product.original_price.is_(None)).order_by(Product.sort_order).limit(4)
+        )
+        candidates = list(result.scalars().all())
+        if not candidates:
+            return
+        deal_end = datetime.now(timezone.utc) + timedelta(days=3)
+        discounts = [15, 20, 25, 10]
+        changed = False
+        for product, pct in zip(candidates, discounts):
+            if product.original_price is not None:
+                continue
+            original = round(product.price_usdt / (1 - pct / 100), 2)
+            product.original_price = original
+            product.deal_ends_at = deal_end
+            changed = True
+        if changed:
+            await session.commit()
+            logger.info(f"✅ Seeded {len(candidates)} flash deals")
+
+
+async def seed_discount_codes() -> None:
+    """Seed the automatic first-purchase discount code (idempotent)."""
+    from sqlalchemy import select
+    from database.models import DiscountCode, DiscountType
+
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(DiscountCode).where(DiscountCode.code == "WELCOME10"))
+        existing = result.scalar_one_or_none()
+        if existing:
+            return
+        dc = DiscountCode(
+            code="WELCOME10",
+            discount_type=DiscountType.PERCENTAGE,
+            discount_value=10.0,
+            min_order_amount=0.0,
+            max_uses=None,
+            is_active=True,
+            first_order_only=True,
+            description="Automatic 10% discount for first-time buyers",
+        )
+        session.add(dc)
+        await session.commit()
+        logger.info("✅ Seeded WELCOME10 first-purchase discount code")
+
+
+async def seed_default_settings() -> None:
+    """Seed default key/value settings used by new features (idempotent)."""
+    from sqlalchemy import select
+    from database.models import Setting
+
+    defaults = {
+        "channel_url": "",
+        "terms_url": "",
+        "money_back_days": "3",
+    }
+    async with AsyncSessionLocal() as session:
+        for key, value in defaults.items():
+            result = await session.execute(select(Setting).where(Setting.key == key))
+            if result.scalar_one_or_none() is None:
+                session.add(Setting(key=key, value=value, is_public=True))
+        await session.commit()

@@ -1,10 +1,12 @@
 from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from database.models import Referral, Wallet, Transaction, TransactionType
+from database.models import Referral, Wallet, Transaction, TransactionType, User
+from bot.services.loyalty_service import get_referral_bonus_percent
 from bot.utils.logger import logger
 from datetime import datetime, timezone
 
+# Fallback used only if the referrer's user record can't be found.
 REFERRAL_BONUS_PERCENT = 5.0
 
 
@@ -25,7 +27,12 @@ class ReferralService:
         return result.scalar() or 0.0
 
     async def process_referral_bonus(self, referrer_id: int, purchase_amount: float) -> float:
-        bonus = purchase_amount * (REFERRAL_BONUS_PERCENT / 100)
+        user_result = await self.session.execute(
+            select(User).where(User.telegram_id == referrer_id)
+        )
+        referrer = user_result.scalar_one_or_none()
+        bonus_percent = get_referral_bonus_percent(referrer.total_spent) if referrer else REFERRAL_BONUS_PERCENT
+        bonus = purchase_amount * (bonus_percent / 100)
 
         wallet_result = await self.session.execute(
             select(Wallet).where(Wallet.user_telegram_id == referrer_id)
@@ -44,7 +51,7 @@ class ReferralService:
             amount=bonus,
             balance_before=balance_before,
             balance_after=wallet.balance,
-            description=f"Referral bonus: {REFERRAL_BONUS_PERCENT}% of ${purchase_amount:.2f}",
+            description=f"Referral bonus: {bonus_percent:.0f}% of ${purchase_amount:.2f}",
         )
         self.session.add(tx)
         await self.session.flush()
