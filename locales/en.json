@@ -155,5 +155,9 @@
   "loyalty_tier_silver": "🥈 Silver",
   "loyalty_tier_gold": "🥇 Gold",
   "loyalty_tier_platinum": "💎 Platinum",
-  "welcome_discount_banner": "🎁 <b>New here?</b> Use code <code>WELCOME10</code> to get <b>10% OFF</b> your first order!"
+  "welcome_discount_banner": "🎁 <b>New here?</b> Use code <code>WELCOME10</code> to get <b>10% OFF</b> your first order!",
+  "discount_valid_info": "✅ <b>Discount Code Valid!</b>\n\n🎫 Code: <b>{code}</b>\n💰 Saves you: <b>{saved}</b>\n\n⚠️ This code applies to orders <b>over ${min_order} USDT</b>.\nIt will be applied automatically at checkout.",
+  "discount_not_found": "❌ <b>Code not found.</b>\n\nThis discount code does not exist. Please check the code and try again.",
+  "discount_expired": "⏰ <b>Code expired.</b>\n\nThis discount code has expired or reached its usage limit.",
+  "discount_not_eligible": "🚫 <b>Not eligible.</b>\n\nThis code is for first-time orders only. You have already placed an order."
 }
