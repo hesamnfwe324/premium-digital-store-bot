@@ -79,5 +79,11 @@
   "gift_reward_progress": "🎁 <b>برنامه هدیه ویژه</b>\n\n۲۰ کاربر واقعی دعوت کن و <b>۱۰ تتر</b> برنده شو!\n\n👥 تعداد دعوت‌شده‌ها: <b>{count}</b> نفر\n🎯 تا هدیه: <b>{remaining}</b> نفر دیگر\n\n{progress_bar}\n\n💡 لینک دعوت خود را از بخش 🎯 برنامه معرفی بگیرید.",
   "gift_reward_earned": "🎉 <b>تبریک! هدیه شما آماده است!</b>\n\n✅ شما ۲۰ نفر را دعوت کرده‌اید!\n🏆 <b>۱۰ تتر (USDT)</b> به شما تعلق می‌گیرد.\n\n📞 برای دریافت جایزه با پشتیبانی تماس بگیرید:\n<a href=\"https://t.me/VPS24H\">@VPS24H</a>",
   "gift_reward_unlocked": "🎊 <b>هدیه ویژه برای شما!</b>\n\n✅ شما به ۲۰ دعوت رسیدید!\n🏆 <b>۱۰ تتر (USDT)</b> جایزه شماست.\n\n📞 همین الان با پشتیبانی تماس بگیرید:\n<a href=\"https://t.me/VPS24H\">@VPS24H</a>",
-  "referral_new_join": "🎉 <b>دعوت موفق!</b>\n\n👤 <b>{name}</b> با لینک دعوت شما عضو شد!\n👥 مجموع دعوت‌های شما: <b>{count}</b> نفر"
+  "referral_new_join": "🎉 <b>دعوت موفق!</b>\n\n👤 <b>{name}</b> با لینک دعوت شما عضو شد!\n👥 مجموع دعوت‌های شما: <b>{count}</b> نفر",
+  "delivery_instant": "آنی",
+  "stock_available": "{count} موجود",
+  "out_of_stock_label": "⚠️ ناموجود",
+  "btn_out_of_stock": "❌ ناموجود",
+  "product_not_found": "محصول یافت نشد.",
+  "product_unavailable": "این محصول دیگر موجود نیست."
 }
