@@ -78,15 +78,13 @@ async def handle_tutorials(callback: CallbackQuery, user_lang: str = "en"):
     await callback.answer()
 
 
+CHANNEL_URL = "https://t.me/addlist/4xJXMUc98LZhNGM8"
+
 @router.callback_query(F.data == "menu:join_channel")
 async def handle_join_channel(callback: CallbackQuery, session: AsyncSession, user_lang: str = "en"):
-    channel_url = await _get_setting(session, "channel_url")
-    if not channel_url:
-        await callback.answer(get_text("channel_not_configured", user_lang), show_alert=True)
-        return
     text = get_text("join_channel_prompt", user_lang)
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=get_text("btn_join_channel", user_lang), url=channel_url)],
+        [InlineKeyboardButton(text=get_text("btn_join_channel", user_lang), url=CHANNEL_URL)],
         [InlineKeyboardButton(text=get_text("btn_back", user_lang), callback_data="menu:home")],
     ])
     try:
