@@ -16,7 +16,7 @@
   "tutorials": "📚 <b>教程和指南</b>\n\n1️⃣ <b>如何购买卡</b>\n   → 选择类别 → 选择产品 → 用加密货币支付 → 即时收到\n\n2️⃣ <b>支持的加密货币</b>\n   → USDT TRC20、USDT BEP20、BTC、ETH、BNB、TON\n\n3️⃣ <b>如何提交付款</b>\n   → 发送到指定钱包地址\n   → 复制交易ID（TXID）\n   → 在机器人中提交\n\n4️⃣ <b>推荐计划</b>\n   → 分享您的链接 → 赚取5%佣金",
   "support": "📞 <b>支持中心</b>\n\n我们今天如何帮助您？",
   "settings": "⚙️ <b>设置</b>\n\n管理您的账户偏好：",
-  "about": "ℹ️ <b>关于我们</b>\n\n<b>高级数字商店</b>是全球数字支付解决方案市场。\n\n✅ 安全可靠\n🌍 全球服务\n⚡ 即时交付\n💎 优质品质\n\n📞 支持: {support}",
+  "about": "ℹ️ <b>关于 VPS24H</b>\n\n🛰 <b>VPS24H — 数字指挥中心</b>\n\n我们是中东最先进的数字服务平台，为追求速度、安全和可靠性的用户而构建。\n\n<b>🏢 关于我们</b>\nVPS24H 是一个专业的数字市场，自2022年起运营，专注于高级虚拟卡、全球礼品卡和顶级订阅服务。40多个国家的数千名用户信任我们的平台。\n\n<b>💡 我们提供的服务</b>\n▸ 💳 国际虚拟 Visa 和 MasterCard\n▸ 🎁 全球礼品卡（亚马逊、Google Play、Steam 等）\n▸ 💎 高级订阅（Netflix、Spotify、ChatGPT 等）\n▸ 🔐 高速 VPN 服务\n\n<b>⚡ 我们的承诺</b>\n▸ 即时自动交付 — 全年无休 24/7/365\n▸ 通过加密货币进行 100% 安全交易\n▸ 专属支持团队 — 随时可用\n▸ 所有产品均提供退款保证\n\n<b>📊 平台数据</b>\n✅ 超过 10,000 名满意客户\n✅ 超过 50,000 个成功订单\n✅ 99.9% 正常运行时间和可靠性\n✅ 平均交付时间不到 60 秒\n\n📞 <b>支持:</b> <a href=\"https://t.me/VPS24H\">@VPS24H</a>\n📢 <b>频道:</b> <a href=\"https://t.me/addlist/4xJXMUc98LZhNGM8\">加入我们的网络</a>",
   "product_detail": "🛍️ <b>{name}</b>\n\n📝 {description}\n\n💵 价格: <b>${price} USDT</b>\n📦 库存: <b>{quantity}</b> 件\n⚡ 交货: <b>{delivery}</b>\n\n准备购买了吗？",
   "out_of_stock": "❌ 此产品目前缺货。\n请稍后再查看。",
   "select_crypto": "💳 <b>选择支付方式</b>\n\n选择您偏好的加密货币：",
