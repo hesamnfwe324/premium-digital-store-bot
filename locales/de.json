@@ -155,5 +155,9 @@
   "loyalty_tier_silver": "🥈 Silber",
   "loyalty_tier_gold": "🥇 Gold",
   "loyalty_tier_platinum": "💎 Platin",
-  "welcome_discount_banner": "🎁 <b>Neu hier?</b> Nutzen Sie den Code <code>WELCOME10</code> für <b>10% RABATT</b> auf Ihre erste Bestellung!"
+  "welcome_discount_banner": "🎁 <b>Neu hier?</b> Nutzen Sie den Code <code>WELCOME10</code> für <b>10% RABATT</b> auf Ihre erste Bestellung!",
+  "discount_valid_info": "✅ <b>Rabattcode gültig!</b>\n\n🎫 Code: <b>{code}</b>\n💰 Deine Ersparnis: <b>{saved}</b>\n\n⚠️ Dieser Code gilt für Bestellungen <b>über ${min_order} USDT</b>.\nEr wird automatisch beim Bezahlen angewendet.",
+  "discount_not_found": "❌ <b>Code nicht gefunden.</b>\n\nDieser Rabattcode existiert nicht. Bitte überprüfe den Code und versuche es erneut.",
+  "discount_expired": "⏰ <b>Code abgelaufen.</b>\n\nDieser Rabattcode ist abgelaufen oder hat sein Nutzungslimit erreicht.",
+  "discount_not_eligible": "🚫 <b>Nicht berechtigt.</b>\n\nDieser Code gilt nur für Erstbestellungen. Du hast bereits eine Bestellung aufgegeben."
 }
