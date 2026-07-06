@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ Нет в наличии",
   "btn_out_of_stock": "❌ Нет в наличии",
   "product_not_found": "Товар не найден.",
-  "product_unavailable": "Этот товар больше недоступен."
+  "product_unavailable": "Этот товар больше недоступен.",
+  "no_products_available": "⚠️ На данный момент нет доступных товаров.",
+  "gift_card_brand_title": "🎁 <b>Подарочные карты {brand}</b>",
+  "default_description": "Цифровой продукт премиум-качества."
 }

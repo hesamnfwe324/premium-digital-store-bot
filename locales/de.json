@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ Nicht vorrätig",
   "btn_out_of_stock": "❌ Nicht vorrätig",
   "product_not_found": "Produkt nicht gefunden.",
-  "product_unavailable": "Dieses Produkt ist nicht mehr verfügbar."
+  "product_unavailable": "Dieses Produkt ist nicht mehr verfügbar.",
+  "no_products_available": "⚠️ Derzeit keine Produkte verfügbar.",
+  "gift_card_brand_title": "🎁 <b>{brand} Geschenkkarten</b>",
+  "default_description": "Digitales Premium-Qualitätsprodukt."
 }

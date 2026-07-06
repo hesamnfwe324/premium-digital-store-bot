@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ 缺货",
   "btn_out_of_stock": "❌ 缺货",
   "product_not_found": "找不到产品。",
-  "product_unavailable": "此产品已不再提供。"
+  "product_unavailable": "此产品已不再提供。",
+  "no_products_available": "⚠️ 目前没有可用产品。",
+  "gift_card_brand_title": "🎁 <b>{brand} 礼品卡</b>",
+  "default_description": "高级数字产品。"
 }

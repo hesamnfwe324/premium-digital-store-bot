@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ غير متوفر",
   "btn_out_of_stock": "❌ غير متوفر",
   "product_not_found": "المنتج غير موجود.",
-  "product_unavailable": "هذا المنتج لم يعد متاحاً."
+  "product_unavailable": "هذا المنتج لم يعد متاحاً.",
+  "no_products_available": "⚠️ لا تتوفر منتجات في الوقت الحالي.",
+  "gift_card_brand_title": "🎁 <b>بطاقات هدايا {brand}</b>",
+  "default_description": "منتج رقمي عالي الجودة."
 }

@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ Rupture de stock",
   "btn_out_of_stock": "❌ Rupture de stock",
   "product_not_found": "Produit introuvable.",
-  "product_unavailable": "Ce produit n'est plus disponible."
+  "product_unavailable": "Ce produit n'est plus disponible.",
+  "no_products_available": "⚠️ Aucun produit disponible pour le moment.",
+  "gift_card_brand_title": "🎁 <b>Cartes Cadeaux {brand}</b>",
+  "default_description": "Produit numérique de qualité premium."
 }

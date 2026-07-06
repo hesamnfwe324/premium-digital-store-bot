@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ Sin stock",
   "btn_out_of_stock": "❌ Sin stock",
   "product_not_found": "Producto no encontrado.",
-  "product_unavailable": "Este producto ya no está disponible."
+  "product_unavailable": "Este producto ya no está disponible.",
+  "no_products_available": "⚠️ No hay productos disponibles en este momento.",
+  "gift_card_brand_title": "🎁 <b>Tarjetas de Regalo {brand}</b>",
+  "default_description": "Producto digital de calidad premium."
 }

@@ -85,5 +85,8 @@
   "out_of_stock_label": "⚠️ ناموجود",
   "btn_out_of_stock": "❌ ناموجود",
   "product_not_found": "محصول یافت نشد.",
-  "product_unavailable": "این محصول دیگر موجود نیست."
+  "product_unavailable": "این محصول دیگر موجود نیست.",
+  "no_products_available": "⚠️ در حال حاضر هیچ محصولی موجود نیست.",
+  "gift_card_brand_title": "🎁 <b>گیفت کارت {brand}</b>",
+  "default_description": "محصول دیجیتال با کیفیت پریمیوم."
 }
