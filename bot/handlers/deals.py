@@ -1,16 +1,18 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select
 from datetime import datetime, timezone
-from database.models import Product, ProductCategory
+from database.models import Product
 from bot.keyboards.products import get_products_keyboard
 from bot.keyboards.account import get_back_keyboard
-from bot.services.review_service import ReviewService
 from bot.utils.i18n import get_text
 import random
 
 router = Router()
+
+FLASH_DEALS_MIN_PRICE = 15.0
+FLASH_DEALS_LIMIT = 5
 
 
 @router.callback_query(F.data == "menu:deals")
@@ -19,10 +21,11 @@ async def handle_flash_deals(callback: CallbackQuery, session: AsyncSession, use
         select(Product).where(
             Product.is_active == True,
             Product.original_price.isnot(None),
+            Product.price >= FLASH_DEALS_MIN_PRICE,
         )
     )
     all_deals = list(result.scalars().all())
-    products = [p for p in all_deals if p.is_on_deal]
+    products = [p for p in all_deals if p.is_on_deal][:FLASH_DEALS_LIMIT]
 
     text = get_text("flash_deals_title", user_lang)
     if not products:
@@ -47,35 +50,22 @@ async def handle_flash_deals(callback: CallbackQuery, session: AsyncSession, use
 
 @router.callback_query(F.data == "menu:best_sellers")
 async def handle_best_sellers(callback: CallbackQuery, session: AsyncSession, user_lang: str = "en"):
-    review_service = ReviewService(session)
-    ranked = await review_service.get_best_sellers(limit=10)
-
     text = get_text("best_sellers_title", user_lang)
 
-    if ranked:
-        product_ids = [pid for pid, _ in ranked]
-        result = await session.execute(
-            select(Product).where(Product.id.in_(product_ids), Product.is_active == True)
+    result = await session.execute(
+        select(Product).where(
+            Product.is_active == True,
+            Product.price >= FLASH_DEALS_MIN_PRICE,
         )
-        products = list(result.scalars().all())
-        products.sort(key=lambda p: product_ids.index(p.id))
-    else:
-        # Fallback: show random active products priced $10 and above
-        result = await session.execute(
-            select(Product).where(
-                Product.is_active == True,
-                Product.price >= 10,
-            )
+    )
+    all_products = list(result.scalars().all())
+    if not all_products:
+        result2 = await session.execute(
+            select(Product).where(Product.is_active == True)
         )
-        all_products = list(result.scalars().all())
-        if not all_products:
-            # If no products >= $10, show any active products
-            result2 = await session.execute(
-                select(Product).where(Product.is_active == True)
-            )
-            all_products = list(result2.scalars().all())
-        random.shuffle(all_products)
-        products = all_products[:10]
+        all_products = list(result2.scalars().all())
+    random.shuffle(all_products)
+    products = all_products[:FLASH_DEALS_LIMIT]
 
     if not products:
         text += "\n\n" + get_text("no_best_sellers", user_lang)
