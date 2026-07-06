@@ -58,6 +58,15 @@ class WalletService:
         )
         return True
 
+    async def get_wallet_for_update(self, user_telegram_id: int) -> Optional[Wallet]:
+        """Fetch wallet with a row-level lock (SELECT FOR UPDATE) to prevent races."""
+        result = await self.session.execute(
+            select(Wallet)
+            .where(Wallet.user_telegram_id == user_telegram_id)
+            .with_for_update()
+        )
+        return result.scalar_one_or_none()
+
     async def debit(
         self,
         user_telegram_id: int,
@@ -66,8 +75,8 @@ class WalletService:
         reference_id: Optional[str] = None,
         description: Optional[str] = None,
     ) -> bool:
-        """Deduct funds from wallet. Returns False if insufficient balance."""
-        wallet = await self.get_wallet(user_telegram_id)
+        """Deduct funds from wallet atomically (row-locked). Returns False if insufficient."""
+        wallet = await self.get_wallet_for_update(user_telegram_id)
         if not wallet or wallet.balance < amount:
             return False
 

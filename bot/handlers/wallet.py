@@ -252,6 +252,12 @@ async def handle_topup_txid_input(
         await state.clear()
         return
 
+    # IDOR guard — only the payment owner may submit TXID
+    if payment.user_telegram_id != message.from_user.id:
+        await message.answer("❌ Unauthorized.")
+        await state.clear()
+        return
+
     if txid.startswith("http"):
         payment.transaction_link = txid
     else:
@@ -299,16 +305,22 @@ async def handle_admin_confirm_deposit(
         return
 
     payment_id = int(callback.data.split(":")[1])
-    result = await session.execute(select(Payment).where(Payment.id == payment_id))
+    # Row-lock the payment to prevent double-credit by concurrent admin clicks
+    result = await session.execute(
+        select(Payment)
+        .where(Payment.id == payment_id)
+        .with_for_update()
+    )
     payment = result.scalar_one_or_none()
 
     if not payment or not payment.is_wallet_deposit:
         await callback.answer("Payment not found or not a deposit.", show_alert=True)
         return
-    if payment.status == PaymentStatus.CONFIRMED:
-        await callback.answer("Already confirmed.", show_alert=True)
+    if payment.status != PaymentStatus.SUBMITTED:
+        await callback.answer("Already processed.", show_alert=True)
         return
 
+    # Atomic status transition SUBMITTED → CONFIRMED
     payment.status = PaymentStatus.CONFIRMED
     payment.confirmed_by_admin = callback.from_user.id
 
@@ -417,7 +429,7 @@ async def handle_pay_from_wallet(
         await callback.answer(text, show_alert=True)
         return
 
-    # Create and instantly deliver the order
+    # Create order
     order_svc = OrderService(session)
     order = await order_svc.create_order(
         user_telegram_id=callback.from_user.id,
@@ -427,7 +439,7 @@ async def handle_pay_from_wallet(
         await callback.answer("❌ Failed to create order.", show_alert=True)
         return
 
-    # Debit wallet
+    # Atomically debit wallet (row-locked)
     debited = await wallet_svc.debit(
         user_telegram_id=callback.from_user.id,
         amount=order.final_price,
@@ -436,7 +448,9 @@ async def handle_pay_from_wallet(
         description=f"Purchase: {product.get_name(user_lang)}",
     )
     if not debited:
-        await session.rollback()
+        # Not enough balance — cancel the order and abort
+        order.status = OrderStatus.CANCELLED
+        await session.commit()
         await callback.answer(get_text("wallet_insufficient", user_lang,
                                        balance=format_price(balance),
                                        required=format_price(order.final_price)), show_alert=True)
@@ -449,7 +463,13 @@ async def handle_pay_from_wallet(
     delivery_svc = DeliveryService(session)
     content = await delivery_svc.deliver_order(order.id)
 
-    # Update user stats
+    if not content:
+        # No stock — roll back everything (debit + order creation)
+        await session.rollback()
+        await callback.answer(get_text("out_of_stock", user_lang), show_alert=True)
+        return
+
+    # Delivery succeeded — update user stats then commit once
     user_res = await session.execute(select(User).where(User.telegram_id == callback.from_user.id))
     user_obj = user_res.scalar_one_or_none()
     if user_obj:
@@ -465,34 +485,21 @@ async def handle_pay_from_wallet(
         amount=format_price(order.final_price),
         balance=format_price(new_balance),
     )
+    delivery_text = get_text(
+        "order_delivered", user_lang,
+        order_number=order.order_number,
+        content=content,
+    )
 
     kb = get_back_keyboard(user_lang)
-
-    if content:
-        delivery_text = get_text(
-            "order_delivered", user_lang,
-            order_number=order.order_number,
-            content=content,
+    try:
+        await callback.message.edit_text(
+            success_text + "\n\n" + delivery_text,
+            reply_markup=kb,
+            parse_mode="HTML",
         )
-        try:
-            await callback.message.edit_text(
-                success_text + "\n\n" + delivery_text,
-                reply_markup=kb,
-                parse_mode="HTML",
-            )
-        except Exception:
-            await callback.message.answer(success_text, reply_markup=kb, parse_mode="HTML")
-            await callback.message.answer(delivery_text, parse_mode="HTML")
-    else:
-        # No stock — refund wallet
-        await wallet_svc.credit(
-            callback.from_user.id, order.final_price,
-            tx_type=TransactionType.REFUND,
-            reference_id=order.order_number,
-            description="Refund: out of stock",
-        )
-        await session.commit()
-        await callback.answer(get_text("out_of_stock", user_lang), show_alert=True)
-        return
+    except Exception:
+        await callback.message.answer(success_text, reply_markup=kb, parse_mode="HTML")
+        await callback.message.answer(delivery_text, parse_mode="HTML")
 
     await callback.answer()
