@@ -44,7 +44,6 @@ def get_product_detail_keyboard(
         buttons.append([InlineKeyboardButton(text=t("btn_buy_now"), callback_data=f"buy:{product_id}")])
     else:
         buttons.append([InlineKeyboardButton(text=t("btn_notify_me"), callback_data=f"notify_stock:{product_id}")])
-    buttons.append([InlineKeyboardButton(text=t("btn_view_reviews"), callback_data=f"product_reviews:{product_id}")])
     buttons.append([InlineKeyboardButton(text=t("btn_back"), callback_data=back_callback)])
     buttons.append([InlineKeyboardButton(text=t("btn_home"), callback_data="menu:home")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
