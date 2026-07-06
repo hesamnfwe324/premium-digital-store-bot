@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     BTC_ADDRESS: str = "bc1ReplaceWithYourBTCAddress"
     ETH_ADDRESS: str = "0xReplaceWithYourETHAddress"
     BNB_ADDRESS: str = "0xReplaceWithYourBNBAddress"
-    TON_ADDRESS: str = "UQReplaceWithYourTONAddress"
+    TON_ADDRESS: str = "UQCicdhdXI0tuwtxOCTI0ljKBWf40pWZx1pe7d6LmTRdXr_a"
 
     APP_NAME: str = "Premium Digital Store"
     SUPPORT_USERNAME: str = "@support"
