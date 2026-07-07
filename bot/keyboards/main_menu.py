@@ -42,8 +42,7 @@ def get_main_menu_keyboard(lang: str = "en") -> InlineKeyboardMarkup:
             InlineKeyboardButton(text=t("btn_terms"), callback_data="menu:terms"),
         ],
         [
-            InlineKeyboardButton(text=t("btn_vps_virtual"), callback_data="vps:type:virtual"),
-            InlineKeyboardButton(text=t("btn_vps_dedicated"), callback_data="vps:type:dedicated"),
+            InlineKeyboardButton(text=t("btn_vps"), callback_data="menu:vps"),
         ],
         [
             InlineKeyboardButton(text=t("btn_about"), callback_data="menu:about"),
