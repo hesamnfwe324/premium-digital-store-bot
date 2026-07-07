@@ -159,5 +159,21 @@
   "discount_valid_info": "✅ <b>Discount Code Valid!</b>\n\n🎫 Code: <b>{code}</b>\n💰 Saves you: <b>{saved}</b>\n\n⚠️ This code applies to orders <b>over ${min_order} USDT</b>.\nIt will be applied automatically at checkout.",
   "discount_not_found": "❌ <b>Code not found.</b>\n\nThis discount code does not exist. Please check the code and try again.",
   "discount_expired": "⏰ <b>Code expired.</b>\n\nThis discount code has expired or reached its usage limit.",
-  "discount_not_eligible": "🚫 <b>Not eligible.</b>\n\nThis code is for first-time orders only. You have already placed an order."
+  "discount_not_eligible": "🚫 <b>Not eligible.</b>\n\nThis code is for first-time orders only. You have already placed an order.",
+  "btn_vps": "🖥 VPS / VDS / RDP",
+  "btn_vps_virtual": "🌐 Virtual Servers (VPS/VDS)",
+  "btn_vps_dedicated": "🖥 Dedicated Servers",
+  "vps_menu_title": "🖥 <b>VPS / VDS / RDP Services</b>\n\nChoose the type of server you need:",
+  "vps_select_location": "📍 <b>Select Server Location</b>\n\nChoose your preferred data center location:",
+  "vps_datacenter_info": "🏢 <b>Data Center:</b> {flag} {location}\n⚡ Uptime: 99.99%  •  🔒 DDoS Protected  •  🌐 BGP Routing",
+  "vps_select_plan": "📦 <b>Select Your Plan</b>\n\nChoose the plan that fits your needs:",
+  "vps_select_gpu": "🎮 <b>Select GPU (Optional)</b>\n\nAdd a GPU to boost your server performance:",
+  "vps_select_duration": "📅 <b>Select Duration</b>\n\nLonger periods get bigger discounts:",
+  "vps_select_os": "💻 <b>Select Operating System</b>\n\nChoose your preferred OS:",
+  "vps_order_summary": "📋 <b>Order Summary</b>\n\n🖥 Type: <b>{type}</b>\n📍 Location: <b>{location}</b>\n\n⚙️ <b>Server Specs:</b>\n🖥 CPU: <code>{cpu}</code>\n💾 RAM: <code>{ram}</code>\n💿 Disk: <code>{disk}</code>\n🌐 Bandwidth: <code>{bandwidth}</code>\n🎮 GPU: <code>{gpu}</code>\n\n📅 Duration: <b>{duration}</b>\n💻 OS: <b>{os}</b>\n\n💰 <b>Total: ${total} USDT</b>\n\nReview your order and confirm:",
+  "btn_vps_order_now": "✅ Confirm & Place Order",
+  "vps_order_placed": "🎉 <b>Order Submitted Successfully!</b>\n\n💰 Total: <b>${total} USDT</b>\n\nOur team has received your order and will contact you shortly to process payment and set up your server.\n\n⚡ Average setup time: 1-2 hours after payment confirmation.",
+  "vps_order_alert": "✅ Order submitted! Our team will contact you soon.",
+  "vps_duration_label": "Duration",
+  "vps_total_label": "Total Price"
 }
