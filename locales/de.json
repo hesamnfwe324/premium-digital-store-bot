@@ -159,5 +159,21 @@
   "discount_valid_info": "✅ <b>Rabattcode gültig!</b>\n\n🎫 Code: <b>{code}</b>\n💰 Deine Ersparnis: <b>{saved}</b>\n\n⚠️ Dieser Code gilt für Bestellungen <b>über ${min_order} USDT</b>.\nEr wird automatisch beim Bezahlen angewendet.",
   "discount_not_found": "❌ <b>Code nicht gefunden.</b>\n\nDieser Rabattcode existiert nicht. Bitte überprüfe den Code und versuche es erneut.",
   "discount_expired": "⏰ <b>Code abgelaufen.</b>\n\nDieser Rabattcode ist abgelaufen oder hat sein Nutzungslimit erreicht.",
-  "discount_not_eligible": "🚫 <b>Nicht berechtigt.</b>\n\nDieser Code gilt nur für Erstbestellungen. Du hast bereits eine Bestellung aufgegeben."
+  "discount_not_eligible": "🚫 <b>Nicht berechtigt.</b>\n\nDieser Code gilt nur für Erstbestellungen. Du hast bereits eine Bestellung aufgegeben.",
+  "btn_vps": "🖥 VPS / VDS / RDP",
+  "btn_vps_virtual": "🌐 Virtuelle Server (VPS/VDS)",
+  "btn_vps_dedicated": "🖥 Dedizierte Server",
+  "vps_menu_title": "🖥 <b>VPS / VDS / RDP Dienste</b>\n\nWählen Sie Ihren Servertyp:",
+  "vps_select_location": "📍 <b>Standort auswählen</b>\n\nWählen Sie Ihr bevorzugtes Rechenzentrum:",
+  "vps_datacenter_info": "🏢 <b>Rechenzentrum:</b> {flag} {location}\n⚡ Uptime: 99.99%  •  🔒 DDoS-Schutz  •  🌐 BGP-Routing",
+  "vps_select_plan": "📦 <b>Tarif auswählen</b>\n\nWählen Sie den passenden Tarif:",
+  "vps_select_gpu": "🎮 <b>GPU auswählen (optional)</b>\n\nFügen Sie eine GPU zur Leistungssteigerung hinzu:",
+  "vps_select_duration": "📅 <b>Laufzeit auswählen</b>\n\nLängere Laufzeiten = Mehr Rabatt:",
+  "vps_select_os": "💻 <b>Betriebssystem auswählen</b>\n\nWählen Sie Ihr bevorzugtes OS:",
+  "vps_order_summary": "📋 <b>Bestellübersicht</b>\n\n🖥 Typ: <b>{type}</b>\n📍 Standort: <b>{location}</b>\n\n⚙️ <b>Server-Specs:</b>\n🖥 CPU: <code>{cpu}</code>\n💾 RAM: <code>{ram}</code>\n💿 Speicher: <code>{disk}</code>\n🌐 Bandbreite: <code>{bandwidth}</code>\n🎮 GPU: <code>{gpu}</code>\n\n📅 Laufzeit: <b>{duration}</b>\n💻 OS: <b>{os}</b>\n\n💰 <b>Gesamt:  USDT</b>\n\nBestellung prüfen und bestätigen:",
+  "btn_vps_order_now": "✅ Bestätigen & Bestellen",
+  "vps_order_placed": "🎉 <b>Bestellung erfolgreich aufgegeben!</b>\n\n💰 Gesamt: <b> USDT</b>\n\nUnser Team hat Ihre Bestellung erhalten und wird sich bald für Zahlung und Server-Einrichtung melden.\n\n⚡ Durchschnittliche Einrichtungszeit: 1-2 Stunden nach Zahlungsbestätigung.",
+  "vps_order_alert": "✅ Bestellung aufgegeben! Unser Team meldet sich bald.",
+  "vps_duration_label": "Laufzeit",
+  "vps_total_label": "Gesamt"
 }
