@@ -159,5 +159,21 @@
   "discount_valid_info": "✅ <b>Code de réduction valide!</b>\n\n🎫 Code: <b>{code}</b>\n💰 Votre économie: <b>{saved}</b>\n\n⚠️ Ce code s'applique aux commandes <b>supérieures à ${min_order} USDT</b>.\nIl sera appliqué automatiquement au paiement.",
   "discount_not_found": "❌ <b>Code introuvable.</b>\n\nCe code de réduction n'existe pas. Veuillez vérifier le code et réessayer.",
   "discount_expired": "⏰ <b>Code expiré.</b>\n\nCe code de réduction a expiré ou a atteint sa limite d'utilisation.",
-  "discount_not_eligible": "🚫 <b>Non éligible.</b>\n\nCe code est réservé aux premières commandes. Vous avez déjà passé une commande."
+  "discount_not_eligible": "🚫 <b>Non éligible.</b>\n\nCe code est réservé aux premières commandes. Vous avez déjà passé une commande.",
+  "btn_vps": "🖥 VPS / VDS / RDP",
+  "btn_vps_virtual": "🌐 Serveurs Virtuels (VPS/VDS)",
+  "btn_vps_dedicated": "🖥 Serveurs Dédiés",
+  "vps_menu_title": "🖥 <b>Services VPS / VDS / RDP</b>\n\nChoisissez le type de serveur dont vous avez besoin:",
+  "vps_select_location": "📍 <b>Choisir l'emplacement</b>\n\nSélectionnez votre centre de données préféré:",
+  "vps_datacenter_info": "🏢 <b>Centre de données:</b> {flag} {location}\n⚡ Disponibilité: 99.99%  •  🔒 Protection DDoS  •  🌐 Routage BGP",
+  "vps_select_plan": "📦 <b>Choisir votre forfait</b>\n\nSélectionnez le forfait qui vous convient:",
+  "vps_select_gpu": "🎮 <b>Choisir GPU (optionnel)</b>\n\nAjoutez un GPU pour améliorer les performances:",
+  "vps_select_duration": "📅 <b>Choisir la durée</b>\n\nPlus longtemps = Plus de réduction:",
+  "vps_select_os": "💻 <b>Choisir le système d'exploitation</b>\n\nChoisissez votre OS préféré:",
+  "vps_order_summary": "📋 <b>Récapitulatif</b>\n\n🖥 Type: <b>{type}</b>\n📍 Emplacement: <b>{location}</b>\n\n⚙️ <b>Spécifications:</b>\n🖥 CPU: <code>{cpu}</code>\n💾 RAM: <code>{ram}</code>\n💿 Disque: <code>{disk}</code>\n🌐 Bande passante: <code>{bandwidth}</code>\n🎮 GPU: <code>{gpu}</code>\n\n📅 Durée: <b>{duration}</b>\n💻 OS: <b>{os}</b>\n\n💰 <b>Total:  USDT</b>\n\nVérifiez et confirmez votre commande:",
+  "btn_vps_order_now": "✅ Confirmer et commander",
+  "vps_order_placed": "🎉 <b>Commande envoyée avec succès!</b>\n\n💰 Total: <b> USDT</b>\n\nNotre équipe a reçu votre commande et vous contactera bientôt pour le paiement et la configuration du serveur.\n\n⚡ Délai moyen de configuration: 1-2 heures après confirmation du paiement.",
+  "vps_order_alert": "✅ Commande envoyée! Notre équipe vous contactera bientôt.",
+  "vps_duration_label": "Durée",
+  "vps_total_label": "Total"
 }
